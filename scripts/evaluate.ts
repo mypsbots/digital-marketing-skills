@@ -5,6 +5,7 @@
  * catalogue coherent and safe:
  *   1. every skill referenced by a prompt spec exists
  *   2. every skill referenced by a workflow step exists
+ *   2b. every skill referenced by another skill's related_skills exists
  *   3. high/critical-risk skills require human approval
  *   4. skills declaring external side effects or cost implications require approval
  *   5. every prompt with an approval note maps to at least one approval-gated
@@ -42,6 +43,17 @@ async function main(): Promise<void> {
     for (const step of wf.steps) {
       if (step.type === 'skill' && step.ref && !known.has(step.ref)) {
         errors.push(`workflow "${wf.id}" step "${step.id}" references missing skill "${step.ref}"`);
+      }
+    }
+  }
+
+  // 2b. related_skills cross-references resolve (catalogue coherence).
+  for (const skill of skills.all()) {
+    for (const ref of skill.metadata.related_skills ?? []) {
+      if (!known.has(ref)) {
+        errors.push(
+          `skill "${skill.metadata.id}" references missing related skill "${ref}"`,
+        );
       }
     }
   }

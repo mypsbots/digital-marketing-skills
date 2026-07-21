@@ -11,7 +11,7 @@ human-in-the-loop controls built in by default**.
 
 ## What's inside
 
-- **75 skills** across 25 categories (`skills/00-foundation` … `skills/24-retail-marketing`),
+- **122 skills** across 27 categories (`skills/00-foundation` … `skills/26-community-reputation`),
   each a single rich `SKILL.md` with YAML metadata, methodology, decision rules, quality &
   compliance checklists, failure conditions, worked examples, KPIs and MCP mappings.
 - **MCP server** (TypeScript/Node) exposing:
@@ -73,7 +73,7 @@ Copy `.env.example` to `.env` to adjust transport, safety defaults and directori
 ## Repository layout
 
 ```
-skills/            # 75 SKILL.md files across 25 categories
+skills/            # 122 SKILL.md files across 27 categories
 workflows/         # multi-step, approval-gated workflow definitions (YAML)
 industries/        # per-industry playbooks (saas, ecommerce, real-estate, retail)
 templates/         # reusable output templates (plans, briefs, reports, approvals)
@@ -110,7 +110,7 @@ pytest && ruff check python && mypy python/dm_skills
 `15-analytics-measurement`, `16-reporting-insights`, `17-budgeting-forecasting`,
 `18-marketing-automation`, `19-compliance-privacy`, `20-saas-growth`,
 `21-product-led-growth`, `22-ecommerce-marketing`, `23-real-estate-marketing`,
-`24-retail-marketing`.
+`24-retail-marketing`, `25-account-based-marketing`, `26-community-reputation`.
 
 ## Contributing
 
