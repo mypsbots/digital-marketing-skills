@@ -1,0 +1,68 @@
+name: New skill request
+description: Request a new marketing skill for the catalogue.
+labels: [skill, enhancement]
+body:
+  - type: input
+    id: skill-name
+    attributes:
+      label: Proposed skill name
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - 00-foundation
+        - 01-market-research
+        - 02-customer-research
+        - 03-brand-positioning
+        - 04-marketing-strategy
+        - 05-offer-and-messaging
+        - 06-content-marketing
+        - 07-seo
+        - 08-paid-search
+        - 09-paid-social
+        - 10-organic-social
+        - 11-email-marketing
+        - 12-crm-lifecycle
+        - 13-conversion-optimisation
+        - 14-analytics-measurement
+        - 15-attribution
+        - 16-experimentation
+        - 17-marketing-automation
+        - 18-influencer-affiliate
+        - 19-video-webinar-podcast
+        - 20-community-reputation
+        - 21-product-led-growth
+        - 22-account-based-marketing
+        - 23-local-marketing
+        - 24-ecommerce
+        - 25-saas
+        - 26-real-estate
+        - 27-retail
+        - 28-sales-enablement
+        - 29-budget-forecasting
+        - 30-reporting-insights
+        - 31-compliance-governance
+        - 32-ai-marketing
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Business purpose
+      description: What decision or outcome does this skill support?
+    validations:
+      required: true
+  - type: dropdown
+    id: risk
+    attributes:
+      label: Expected risk level
+      options: [low, medium, high, critical]
+    validations:
+      required: true
+  - type: textarea
+    id: inputs-outputs
+    attributes:
+      label: Expected inputs and outputs

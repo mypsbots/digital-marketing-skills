@@ -1,0 +1,69 @@
+# Approval policies map action classes to approval requirements.
+# The approval engine enforces these before any high-risk action executes.
+default_policy:
+  require_approval: true
+  approval_expiry_hours: 72
+  require_rollback_plan_for: [high, critical]
+
+actions:
+  publish_content:
+    risk: high
+    require_approval: true
+    requires: [content_final, brand_review, compliance_review]
+  send_marketing_email:
+    risk: high
+    require_approval: true
+    requires: [consent_check, suppression_check, spam_review]
+  send_marketing_sms:
+    risk: high
+    require_approval: true
+    requires: [consent_check, suppression_check, quiet_hours_check]
+  launch_ad:
+    risk: high
+    require_approval: true
+    requires: [policy_review, tracking_validation, budget_confirmation]
+  modify_ad:
+    risk: high
+    require_approval: true
+  change_budget:
+    risk: high
+    require_approval: true
+    requires: [cost_impact_estimate]
+  reallocate_budget:
+    risk: high
+    require_approval: true
+    requires: [cost_impact_estimate]
+  upload_customer_list:
+    risk: high
+    require_approval: true
+    requires: [consent_check, pii_minimisation]
+  bulk_modify_crm:
+    risk: high
+    require_approval: true
+  change_analytics_config:
+    risk: high
+    require_approval: true
+  publish_pricing_or_regulated_claim:
+    risk: high
+    require_approval: true
+    requires: [claim_substantiation, legal_flag]
+  contact_leads_automatically:
+    risk: high
+    require_approval: true
+    requires: [consent_check]
+  delete_campaign:
+    risk: critical
+    require_approval: true
+    requires: [rollback_plan]
+  delete_audience:
+    risk: critical
+    require_approval: true
+    requires: [rollback_plan]
+  delete_marketing_data:
+    risk: critical
+    require_approval: true
+    requires: [rollback_plan, data_retention_check]
+
+read_only_actions:
+  require_approval: false
+  note: Read-only analysis may proceed without approval when authorised.

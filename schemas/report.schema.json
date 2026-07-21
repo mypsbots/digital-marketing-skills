@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/report.schema.json",
+  "title": "Marketing Report",
+  "type": "object",
+  "required": ["title", "period", "sections"],
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": ["daily", "weekly", "monthly", "quarterly", "campaign", "channel", "executive", "ad_hoc"]
+    },
+    "period": {
+      "type": "object",
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" },
+        "comparison_period": { "type": "object" }
+      }
+    },
+    "currency": { "type": "string" },
+    "executive_summary": { "type": "string" },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["heading"],
+        "properties": {
+          "heading": { "type": "string" },
+          "metrics": { "type": "array", "items": { "type": "object" } },
+          "narrative": { "type": "string" },
+          "anomalies": { "type": "array", "items": { "type": "string" } },
+          "insights": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "recommendation": { "type": "string" },
+          "evidence": { "type": "string" },
+          "priority": { "type": "string", "enum": ["low", "medium", "high"] },
+          "owner": { "type": "string" }
+        }
+      }
+    },
+    "assumptions": { "type": "array", "items": { "type": "string" } },
+    "data_sources": { "type": "array", "items": { "type": "string" } },
+    "audit_id": { "type": "string" }
+  }
+}

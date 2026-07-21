@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/campaign.schema.json",
+  "title": "Campaign Plan",
+  "type": "object",
+  "required": ["name", "objective", "channel", "audience", "budget", "measurement"],
+  "additionalProperties": true,
+  "properties": {
+    "name": { "type": "string" },
+    "objective": { "type": "string" },
+    "business_objective": { "type": "string" },
+    "funnel_stage": {
+      "type": "string",
+      "enum": ["awareness", "consideration", "decision", "retention", "advocacy"]
+    },
+    "channel": { "type": "string" },
+    "audience": { "$ref": "audience.schema.json" },
+    "offer": { "type": "string" },
+    "geo": {
+      "type": "object",
+      "properties": {
+        "countries": { "type": "array", "items": { "type": "string" } },
+        "regions": { "type": "array", "items": { "type": "string" } },
+        "radius_km": { "type": "number" }
+      }
+    },
+    "budget": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string" },
+        "period": { "type": "string", "enum": ["daily", "weekly", "monthly", "total"] }
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "properties": {
+        "start": { "type": "string", "format": "date-time" },
+        "end": { "type": "string", "format": "date-time" },
+        "timezone": { "type": "string" }
+      }
+    },
+    "conversion_action": { "type": "string" },
+    "measurement": { "$ref": "measurement-plan.schema.json" },
+    "creative_brief": { "$ref": "content-brief.schema.json" },
+    "naming_convention": { "type": "string" },
+    "utm": { "type": "object" },
+    "exclusions": { "type": "array", "items": { "type": "string" } },
+    "approval": { "$ref": "approval.schema.json" },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "in_review", "approved", "scheduled", "live", "paused", "ended"]
+    }
+  }
+}

@@ -1,0 +1,42 @@
+id: monthly-reporting
+name: Monthly Marketing Reporting
+version: 1.0.0
+objective: Produce a monthly marketing report with insights, anomalies and prioritised recommendations.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: Monthly reporting cycle or user request.
+required_inputs:
+  - date range
+  - KPIs
+  - data access or figures
+optional_inputs:
+  - targets
+  - prior period
+  - segments
+preconditions:
+  - Read-only analysis.
+steps:
+  - id: diagnose
+    name: Diagnose performance and drivers
+    type: skill
+    ref: analytics.marketing-performance-diagnosis
+  - id: report
+    name: Assemble monthly report
+    type: skill
+    ref: reporting.monthly-marketing-report
+  - id: summary
+    name: Write executive summary
+    type: skill
+    ref: reporting.executive-summary
+outputs:
+  - executive summary
+  - channel sections
+  - anomalies
+  - recommendations
+  - assumptions
+kpis:
+  - KPI attainment
+  - recommendation adoption
+approval_gates: []
+audit_requirements:
+  - record data sources and period
+rollback_guidance: Read-only; no rollback required.

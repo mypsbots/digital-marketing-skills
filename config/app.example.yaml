@@ -1,0 +1,36 @@
+# Example application configuration. Copy to app.yaml for local overrides.
+# Secrets are NEVER stored here; they are read from environment variables.
+
+server:
+  transport: stdio # stdio | http
+  http:
+    host: 127.0.0.1
+    port: 8080
+  log:
+    level: info # debug | info | warn | error
+    format: json # json | pretty
+    redact_pii: true
+
+safety:
+  read_only: true # disable all write tools when true
+  write_dry_run_default: true # write tools preview unless explicitly executed
+  require_approval: true # enforce approval engine for high-risk actions
+  freshness_window_days: 180 # platform content older than this is flagged as stale
+
+paths:
+  skills_dir: ./skills
+  workflows_dir: ./workflows
+  resources_dir: ./resources
+  templates_dir: ./templates
+  industries_dir: ./industries
+
+defaults:
+  locale: en-GB
+  currency: GBP
+  timezone: Europe/London
+  attribution_window_days: 30
+
+connectors:
+  enable_live: false # when false, only mock connectors are used
+  allowlist:
+    - mock

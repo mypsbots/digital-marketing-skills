@@ -1,0 +1,30 @@
+# Canonical funnel stages. Skills declare supported funnel stages.
+# A pirate-metrics (AARRR) mapping is provided for product-led contexts.
+funnel_stages:
+  - id: awareness
+    name: Awareness
+    description: The audience becomes aware of a problem, category or brand.
+    example_kpis: [impressions, reach, brand-search-volume, new-users]
+  - id: consideration
+    name: Consideration
+    description: The audience evaluates options and engages more deeply.
+    example_kpis: [engaged-sessions, content-consumption, email-signups, demo-page-views]
+  - id: decision
+    name: Decision / conversion
+    description: The audience takes the primary conversion action.
+    example_kpis: [conversion-rate, cost-per-conversion, leads, purchases]
+  - id: retention
+    name: Retention
+    description: Existing customers continue, adopt and stay.
+    example_kpis: [retention-rate, churn-rate, repeat-purchase-rate, nrr]
+  - id: advocacy
+    name: Advocacy / expansion
+    description: Customers refer others and expand their spend.
+    example_kpis: [referral-rate, nps, expansion-revenue, reviews]
+
+aarrr_mapping:
+  acquisition: awareness
+  activation: consideration
+  revenue: decision
+  retention: retention
+  referral: advocacy

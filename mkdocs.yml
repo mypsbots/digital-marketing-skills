@@ -1,0 +1,30 @@
+site_name: Digital Marketing Skills MCP
+site_description: Enterprise digital marketing skills library and Model Context Protocol server.
+repo_url: https://github.com/mypsbots/digital-marketing-skills
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Security: security.md
+  - Approval model: approval-model.md
+  - Connector model: connectors.md
+  - Skill authoring: skill-authoring.md
+  - Metrics catalogue: metrics.md
+  - Workflows: workflows.md
+  - Deployment: deployment.md

@@ -1,0 +1,70 @@
+# Marketing channel catalogue. Skills and campaigns reference channel IDs.
+channels:
+  - id: organic-search
+    name: Organic search (SEO)
+    type: owned-earned
+    primary_funnel_stages: [awareness, consideration]
+  - id: paid-search
+    name: Paid search (SEM)
+    type: paid
+    primary_funnel_stages: [consideration, decision]
+  - id: paid-social
+    name: Paid social
+    type: paid
+    primary_funnel_stages: [awareness, consideration, decision]
+  - id: organic-social
+    name: Organic social
+    type: owned-earned
+    primary_funnel_stages: [awareness, consideration, retention]
+  - id: display
+    name: Display & programmatic
+    type: paid
+    primary_funnel_stages: [awareness, consideration]
+  - id: email
+    name: Email
+    type: owned
+    primary_funnel_stages: [consideration, decision, retention]
+  - id: sms
+    name: SMS
+    type: owned
+    primary_funnel_stages: [decision, retention]
+  - id: content
+    name: Content marketing
+    type: owned
+    primary_funnel_stages: [awareness, consideration]
+  - id: video
+    name: Video (YouTube, short-form)
+    type: owned-paid
+    primary_funnel_stages: [awareness, consideration]
+  - id: affiliate
+    name: Affiliate & partnerships
+    type: paid-earned
+    primary_funnel_stages: [consideration, decision]
+  - id: influencer
+    name: Influencer & creator
+    type: paid-earned
+    primary_funnel_stages: [awareness, consideration]
+  - id: referral
+    name: Referral & word-of-mouth
+    type: earned
+    primary_funnel_stages: [decision, retention, advocacy]
+  - id: events-webinar
+    name: Events & webinars
+    type: owned
+    primary_funnel_stages: [consideration, decision]
+  - id: pr-digital
+    name: Digital PR
+    type: earned
+    primary_funnel_stages: [awareness]
+  - id: local
+    name: Local (GBP, maps, citations)
+    type: owned-earned
+    primary_funnel_stages: [consideration, decision]
+  - id: marketplace
+    name: Marketplaces & retail media
+    type: paid
+    primary_funnel_stages: [decision]
+  - id: community
+    name: Community
+    type: owned-earned
+    primary_funnel_stages: [retention, advocacy]

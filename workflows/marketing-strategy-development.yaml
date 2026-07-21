@@ -1,0 +1,67 @@
+id: marketing-strategy-development
+name: Marketing Strategy Development
+version: 1.0.0
+objective: Build a measurable marketing strategy linking objectives to audience, channels, budget and KPIs.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests a marketing strategy or plan.
+required_inputs:
+  - business objective
+  - audience
+  - offer
+  - budget range
+  - time horizon
+optional_inputs:
+  - positioning
+  - constraints
+  - current performance
+preconditions:
+  - Planning only; spend execution requires approval.
+steps:
+  - id: objectives
+    name: Clarify objectives and metric chain
+    type: skill
+    ref: foundation.business-objective-clarification
+  - id: icp
+    name: Confirm ICP and audience
+    type: skill
+    ref: customer-research.ideal-customer-profile
+  - id: positioning
+    name: Confirm positioning
+    type: skill
+    ref: positioning.positioning-statement
+  - id: kpis
+    name: Define KPI framework and targets
+    type: skill
+    ref: analytics.kpi-framework
+  - id: channels
+    name: Plan channel mix
+    type: skill
+    ref: strategy.channel-mix-planning
+  - id: budget
+    name: Allocate budget across channels
+    type: skill
+    ref: budgeting.channel-budget-allocation
+  - id: strategy
+    name: Assemble annual strategy and roadmap
+    type: skill
+    ref: strategy.annual-marketing-strategy
+  - id: spend_gate
+    name: Approval gate before committing spend
+    type: approval_gate
+    approval_required: true
+outputs:
+  - objectives
+  - audience & positioning
+  - channel mix
+  - measurement plan
+  - budget
+  - roadmap
+  - risks
+kpis:
+  - plan completeness
+  - target attainment
+approval_gates:
+  - spend_gate
+audit_requirements:
+  - record assumptions and budget rationale
+rollback_guidance: Planning artefact; no live changes until approved.

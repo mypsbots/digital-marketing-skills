@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/audience.schema.json",
+  "title": "Audience Definition",
+  "type": "object",
+  "required": ["name", "type"],
+  "additionalProperties": true,
+  "properties": {
+    "name": { "type": "string" },
+    "type": {
+      "type": "string",
+      "enum": ["prospecting", "retargeting", "lookalike", "custom", "suppression"]
+    },
+    "description": { "type": "string" },
+    "segmentation": {
+      "type": "object",
+      "properties": {
+        "demographic": { "type": "object" },
+        "geographic": { "type": "object" },
+        "behavioural": { "type": "object" },
+        "psychographic": { "type": "object" },
+        "firmographic": { "type": "object" }
+      }
+    },
+    "size_estimate": { "type": "integer", "minimum": 0 },
+    "consent_basis": { "type": "string" },
+    "pii_present": { "type": "boolean" },
+    "source": { "type": "string" },
+    "exclusions": { "type": "array", "items": { "type": "string" } },
+    "compliance_notes": { "type": "string" }
+  }
+}

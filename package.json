@@ -1,0 +1,69 @@
+{
+  "name": "digital-marketing-skills-mcp",
+  "version": "0.1.0",
+  "description": "Enterprise Digital Marketing Skills library and Model Context Protocol (MCP) server. A modular, extensible platform of production-ready marketing skills, workflows, resources, prompts and tools for AI assistants and marketing teams.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "mypsbots",
+  "homepage": "https://github.com/mypsbots/digital-marketing-skills",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mypsbots/digital-marketing-skills.git"
+  },
+  "keywords": [
+    "digital-marketing",
+    "mcp",
+    "model-context-protocol",
+    "marketing-skills",
+    "seo",
+    "paid-media",
+    "content-marketing",
+    "marketing-automation",
+    "ai-marketing"
+  ],
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "bin": {
+    "digital-marketing-skills-mcp": "dist/server/index.js"
+  },
+  "main": "dist/server/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server/index.js",
+    "dev": "tsx watch src/server/index.ts",
+    "start:stdio": "node dist/server/index.js --transport stdio",
+    "start:http": "node dist/server/index.js --transport http",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "validate:skills": "tsx scripts/validate-skills.ts",
+    "evaluate": "tsx scripts/evaluate.ts",
+    "docs:build": "mkdocs build",
+    "docs:serve": "mkdocs serve"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "express": "^4.19.2",
+    "gray-matter": "^4.0.3",
+    "yaml": "^2.5.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/coverage-v8": "^2.0.0",
+    "eslint": "^9.9.0",
+    "prettier": "^3.3.3",
+    "tsx": "^4.16.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  }
+}

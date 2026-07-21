@@ -1,0 +1,29 @@
+# Risk classification used by skills, tools and the policy engine.
+risk_levels:
+  - id: low
+    name: Low
+    description: Read-only analysis, planning and generation of drafts. No external side effects.
+    approval_required: false
+    examples: [keyword-research, audit, strategy-draft, content-brief]
+  - id: medium
+    name: Medium
+    description: >-
+      Produces artefacts intended for external use, or reads sensitive data. May recommend
+      spend but does not execute it. Internal review recommended.
+    approval_required: false
+    examples: [publish-ready-content-draft, budget-recommendation, audience-definition-draft]
+  - id: high
+    name: High
+    description: >-
+      Publishes content, contacts customers, changes live campaigns or budgets, uploads lists,
+      or modifies CRM/analytics configuration. Requires explicit human approval.
+    approval_required: true
+    examples: [publish-content, send-email, launch-ad, change-budget, upload-customer-list]
+  - id: critical
+    name: Critical
+    description: >-
+      Irreversible or high-impact actions such as deleting campaigns, audiences or marketing
+      data, or bulk destructive CRM operations. Requires explicit human approval and a
+      documented rollback plan.
+    approval_required: true
+    examples: [delete-campaign, delete-audience, bulk-crm-delete, purge-data]

@@ -1,0 +1,21 @@
+name: Skill Validation
+
+on:
+  push:
+    branches: [main]
+    paths: ['skills/**', 'schemas/**', 'scripts/**']
+  pull_request:
+    paths: ['skills/**', 'schemas/**', 'scripts/**']
+
+jobs:
+  validate-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+      - run: npm ci
+      - name: Validate skill front matter and structure
+        run: npm run validate:skills

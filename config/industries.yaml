@@ -1,0 +1,31 @@
+# Industries supported by the platform. Skills declare applicable industries.
+industries:
+  - id: common
+    name: Common / cross-industry
+    description: Applies to most businesses regardless of vertical.
+  - id: saas
+    name: SaaS
+    description: Software-as-a-service, subscription software, B2B and B2C.
+    sub_types: [b2b-saas, b2c-saas, enterprise-saas, ai-saas, vertical-saas, api-first-saas]
+  - id: ecommerce
+    name: E-commerce
+    description: Online retail and direct-to-consumer commerce.
+    sub_types: [shopify, woocommerce, dtc, marketplace, subscription-commerce, multi-category]
+  - id: real-estate
+    name: Real estate
+    description: Residential, commercial and rental property marketing.
+    sub_types: [residential, commercial, rental, developer, estate-agency, investor]
+  - id: retail
+    name: Retail
+    description: Physical and omnichannel retail.
+    sub_types: [single-store, multi-store, omnichannel, franchise]
+
+business_models:
+  - id: b2b
+    name: Business-to-business
+  - id: b2c
+    name: Business-to-consumer
+  - id: b2b2c
+    name: Business-to-business-to-consumer
+  - id: d2c
+    name: Direct-to-consumer

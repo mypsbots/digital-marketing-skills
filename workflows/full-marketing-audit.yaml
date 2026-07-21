@@ -1,0 +1,58 @@
+id: full-marketing-audit
+name: Full Digital Marketing Audit
+version: 1.0.0
+objective: Produce a structured, evidence-based audit of current digital marketing across channels with prioritised recommendations.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests a marketing audit or health check.
+required_inputs:
+  - company/website
+  - primary business objective
+  - target market
+optional_inputs:
+  - current channels
+  - analytics access
+  - known problems
+  - budget
+preconditions:
+  - Read-only analysis; no credentials required for mock/manual data.
+steps:
+  - id: context
+    name: Clarify business context and objectives
+    type: skill
+    ref: foundation.business-objective-clarification
+  - id: presence
+    name: Audit digital presence (owned/earned/paid)
+    type: skill
+    ref: foundation.digital-presence-audit
+  - id: maturity
+    name: Assess marketing maturity
+    type: skill
+    ref: foundation.marketing-maturity-assessment
+  - id: seo
+    name: Run SEO audit
+    type: skill
+    ref: seo.seo-audit
+  - id: measurement
+    name: Assess measurement and tracking
+    type: skill
+    ref: analytics.measurement-strategy
+  - id: synthesis
+    name: Synthesise findings and prioritise recommendations
+    type: checkpoint
+  - id: report
+    name: Produce audit report
+    type: skill
+    ref: reporting.executive-summary
+approval_gates: []
+outputs:
+  - maturity summary
+  - per-channel findings
+  - risks
+  - prioritised recommendations
+  - next actions
+kpis:
+  - findings coverage
+  - recommendation adoption
+audit_requirements:
+  - record inputs used and data provenance
+rollback_guidance: Read-only; no rollback required.

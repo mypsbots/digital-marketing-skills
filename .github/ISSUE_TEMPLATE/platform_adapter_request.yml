@@ -1,0 +1,39 @@
+name: Platform adapter request
+description: Request a connector/adapter for a marketing platform.
+labels: [connector, enhancement]
+body:
+  - type: input
+    id: platform
+    attributes:
+      label: Platform / provider
+      description: e.g. Google Ads, Meta Ads, HubSpot, GA4, Klaviyo, Shopify.
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Connector category
+      options: [analytics, advertising, social, crm, email, commerce, content, research, automation]
+    validations:
+      required: true
+  - type: textarea
+    id: read-caps
+    attributes:
+      label: Desired read capabilities
+    validations:
+      required: true
+  - type: textarea
+    id: write-caps
+    attributes:
+      label: Desired write capabilities (all high-risk, approval-gated)
+  - type: input
+    id: docs
+    attributes:
+      label: Link to official API documentation
+  - type: checkboxes
+    id: mock-first
+    attributes:
+      label: Confirmation
+      options:
+        - label: I understand connectors are mock-first and live writes require approval + credentials.
+          required: true

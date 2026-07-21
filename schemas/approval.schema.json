@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/approval.schema.json",
+  "title": "Approval Request",
+  "type": "object",
+  "required": ["requested_action", "business_reason", "state"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "requested_action": { "type": "string" },
+    "business_reason": { "type": "string" },
+    "platform": { "type": "string" },
+    "account": { "type": "string" },
+    "asset": { "type": "string" },
+    "proposed_changes": { "type": "array", "items": { "type": "object" } },
+    "previous_value": {},
+    "proposed_value": {},
+    "estimated_cost_impact": {
+      "type": "object",
+      "properties": {
+        "amount": { "type": "number" },
+        "currency": { "type": "string" }
+      }
+    },
+    "expected_outcome": { "type": "string" },
+    "risks": { "type": "array", "items": { "type": "string" } },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "requestor": { "type": "string" },
+    "approver": { "type": "string" },
+    "expiry": { "type": "string", "format": "date-time" },
+    "rollback_guidance": { "type": "string" },
+    "state": {
+      "type": "string",
+      "enum": [
+        "not_required",
+        "draft",
+        "pending",
+        "approved",
+        "rejected",
+        "expired",
+        "cancelled",
+        "executed",
+        "failed"
+      ]
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "decided_at": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,50 @@
+id: seo-content-cluster
+name: SEO Content Cluster Development
+version: 1.0.0
+objective: Plan a pillar-and-cluster content structure for a topic, from keyword discovery to briefs.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests an SEO content cluster or topic authority plan.
+required_inputs:
+  - topic
+  - audience
+  - target market/locale
+optional_inputs:
+  - seed keywords
+  - existing pages
+preconditions:
+  - Planning only; publishing requires approval.
+steps:
+  - id: discovery
+    name: Discover keyword universe
+    type: skill
+    ref: seo.keyword-discovery
+  - id: clustering
+    name: Cluster keywords by intent
+    type: skill
+    ref: seo.keyword-clustering
+  - id: cluster_plan
+    name: Plan pillar and cluster structure
+    type: skill
+    ref: seo.topic-cluster-planning
+  - id: briefs
+    name: Create content briefs
+    type: skill
+    ref: seo.content-brief-creation
+  - id: publish_gate
+    name: Approval gate before publishing
+    type: approval_gate
+    approval_required: true
+outputs:
+  - pillar page
+  - cluster topics
+  - intent mapping
+  - internal-linking plan
+  - briefs
+kpis:
+  - topical coverage
+  - organic traffic (qualified)
+approval_gates:
+  - publish_gate
+audit_requirements:
+  - record keyword sources and intent mapping
+rollback_guidance: Planning artefact; no publishing until approved.

@@ -1,0 +1,55 @@
+id: email-nurture-launch
+name: Email Nurture Sequence Launch
+version: 1.0.0
+objective: Design a consent-based lead-nurture email sequence and prepare it for sending, gated by consent and approval checks.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests an email nurture or drip sequence.
+required_inputs:
+  - audience/segment
+  - objective
+  - offer
+optional_inputs:
+  - ESP
+  - existing content
+  - consent status
+preconditions:
+  - Sending requires valid consent, suppression checks and approval.
+steps:
+  - id: consent
+    name: Assess consent and lawful basis
+    type: skill
+    ref: compliance.consent-assessment
+  - id: sequence
+    name: Design nurture sequence
+    type: skill
+    ref: email.lead-nurture-series
+  - id: bodies
+    name: Draft email bodies and subjects
+    type: skill
+    ref: email.email-body-creation
+  - id: measurement
+    name: Define measurement
+    type: skill
+    ref: analytics.kpi-framework
+  - id: send_gate
+    name: Approval gate before sending
+    type: approval_gate
+    approval_required: true
+outputs:
+  - sequence map
+  - per-email brief
+  - personalisation
+  - measurement
+  - compliance checks
+kpis:
+  - open rate
+  - CTOR
+  - conversion
+  - unsubscribe/complaint rate
+approval_gates:
+  - send_gate
+failure_paths:
+  - if consent invalid, block sending
+audit_requirements:
+  - record consent basis and approver
+rollback_guidance: No sends occur until approved; suppress and stop sequence to reverse.

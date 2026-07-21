@@ -1,0 +1,58 @@
+id: meta-ads-launch
+name: Meta Ads Campaign Launch
+version: 1.0.0
+objective: Design and prepare a Meta (Facebook/Instagram) Ads campaign for launch, gated by explicit approval before any spend.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests a Meta / paid-social campaign.
+required_inputs:
+  - objective
+  - budget
+  - audience
+  - offer
+optional_inputs:
+  - creative assets
+  - pixel/CAPI status
+  - catalogue
+preconditions:
+  - No account changes are made; output is a plan requiring approval.
+steps:
+  - id: architecture
+    name: Design campaign structure (prospecting/retargeting)
+    type: skill
+    ref: paid-social.social-campaign-architecture
+  - id: audiences
+    name: Plan audiences and exclusions
+    type: skill
+    ref: paid-social.audience-planning
+  - id: creative
+    name: Develop creative briefs
+    type: skill
+    ref: paid-social.creative-brief-development
+  - id: tracking
+    name: Confirm tracking (pixel/CAPI) plan
+    type: skill
+    ref: analytics.tracking-plan-design
+  - id: compliance
+    name: Screen for policy and compliance risks
+    type: skill
+    ref: compliance.marketing-compliance-assessment
+  - id: launch_gate
+    name: Approval gate before launch or budget change
+    type: approval_gate
+    approval_required: true
+outputs:
+  - campaign structure
+  - audiences
+  - creative concepts
+  - budget
+  - tracking
+  - approvals
+kpis:
+  - CPA
+  - ROAS
+  - CTR
+approval_gates:
+  - launch_gate
+audit_requirements:
+  - record proposed spend, audiences and approver
+rollback_guidance: Nothing is launched until approved.

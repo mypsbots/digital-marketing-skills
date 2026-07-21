@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/skill.schema.json",
+  "title": "Marketing Skill Metadata",
+  "description": "Schema for the YAML front matter of every SKILL.md file.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "name",
+    "version",
+    "status",
+    "description",
+    "category",
+    "industries",
+    "business_models",
+    "funnel_stages",
+    "risk_level",
+    "execution_mode",
+    "human_approval_required",
+    "last_reviewed"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+([._-][a-z0-9]+)*$",
+      "description": "Unique dotted/hyphenated identifier, e.g. seo.keyword-discovery"
+    },
+    "name": { "type": "string", "minLength": 3 },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "experimental", "beta", "stable", "deprecated"]
+    },
+    "description": { "type": "string", "minLength": 10 },
+    "category": { "type": "string" },
+    "sub_category": { "type": "string" },
+    "industries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["common", "saas", "ecommerce", "real-estate", "retail"]
+      }
+    },
+    "business_models": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "enum": ["b2b", "b2c", "b2b2c", "d2c"] }
+    },
+    "funnel_stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["awareness", "consideration", "decision", "retention", "advocacy"]
+      }
+    },
+    "channels": { "type": "array", "items": { "type": "string" } },
+    "objectives": { "type": "array", "items": { "type": "string" } },
+    "risk_level": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": [
+        "analysis",
+        "planning",
+        "generation",
+        "recommendation",
+        "simulation",
+        "read_only_tool",
+        "write_tool",
+        "workflow"
+      ]
+    },
+    "human_approval_required": { "type": "boolean" },
+    "estimated_duration": { "type": "string" },
+    "required_inputs": { "type": "array", "items": { "type": "string" } },
+    "optional_inputs": { "type": "array", "items": { "type": "string" } },
+    "outputs": { "type": "array", "items": { "type": "string" } },
+    "dependencies": { "type": "array", "items": { "type": "string" } },
+    "related_skills": { "type": "array", "items": { "type": "string" } },
+    "resources": { "type": "array", "items": { "type": "string" } },
+    "mcp_tools": { "type": "array", "items": { "type": "string" } },
+    "mcp_prompts": { "type": "array", "items": { "type": "string" } },
+    "data_sensitivity": {
+      "type": "string",
+      "enum": ["public", "internal", "confidential", "restricted"]
+    },
+    "pii_expected": { "type": "boolean" },
+    "external_side_effects": { "type": "boolean" },
+    "cost_implication": { "type": "boolean" },
+    "last_reviewed": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "ISO 8601 date (YYYY-MM-DD)"
+    },
+    "maintainers": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "risk_level": { "enum": ["high", "critical"] } }
+      },
+      "then": {
+        "properties": { "human_approval_required": { "const": true } }
+      }
+    }
+  ]
+}

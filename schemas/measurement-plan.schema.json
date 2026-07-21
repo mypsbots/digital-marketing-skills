@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/measurement-plan.schema.json",
+  "title": "Measurement Plan",
+  "type": "object",
+  "required": ["business_objective", "kpis"],
+  "additionalProperties": true,
+  "properties": {
+    "business_objective": { "type": "string" },
+    "marketing_objective": { "type": "string" },
+    "north_star_metric": { "type": "string" },
+    "kpis": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["metric_id"],
+        "properties": {
+          "metric_id": { "type": "string" },
+          "target": { "type": "number" },
+          "data_source": { "type": "string" },
+          "attribution_model": { "type": "string" },
+          "attribution_window_days": { "type": "integer" },
+          "decision_rule": { "type": "string" }
+        }
+      }
+    },
+    "guardrail_metrics": { "type": "array", "items": { "type": "string" } },
+    "tracking_plan_ref": { "type": "string" },
+    "conversion_definition": { "type": "string" },
+    "reporting_cadence": { "type": "string" },
+    "date_range": {
+      "type": "object",
+      "properties": {
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "timezone": { "type": "string" }
+      }
+    }
+  }
+}

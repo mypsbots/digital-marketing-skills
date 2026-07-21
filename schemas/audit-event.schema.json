@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/audit-event.schema.json",
+  "title": "Audit Event",
+  "type": "object",
+  "required": ["id", "timestamp", "actor", "action", "outcome"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "timestamp": { "type": "string", "format": "date-time", "description": "UTC ISO 8601" },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["user", "agent", "system"] },
+        "id": { "type": "string" }
+      }
+    },
+    "action": { "type": "string" },
+    "tool": { "type": "string" },
+    "skill_id": { "type": "string" },
+    "resource": { "type": "string" },
+    "risk_level": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+    "approval_id": { "type": "string" },
+    "dry_run": { "type": "boolean" },
+    "outcome": {
+      "type": "string",
+      "enum": ["success", "partial_success", "blocked", "denied", "failed"]
+    },
+    "inputs_digest": { "type": "string", "description": "Hash/summary; never raw PII/secrets" },
+    "details": { "type": "object" }
+  }
+}

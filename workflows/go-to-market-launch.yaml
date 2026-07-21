@@ -1,0 +1,66 @@
+id: go-to-market-launch
+name: Go-To-Market Launch
+version: 1.0.0
+objective: Design an end-to-end GTM plan from research through launch and measurement, gated before spend.
+industries: [common, saas, ecommerce, real-estate, retail]
+trigger: User requests a go-to-market or product/feature launch plan.
+required_inputs:
+  - product/service
+  - target segment
+  - value proposition
+  - launch timeframe
+optional_inputs:
+  - competitors
+  - pricing
+  - sales motion
+preconditions:
+  - Planning only; launching campaigns/spend requires approval.
+steps:
+  - id: research
+    name: Confirm market and competitor context
+    type: skill
+    ref: market-research.competitor-positioning-analysis
+  - id: icp
+    name: Confirm ICP and personas
+    type: skill
+    ref: customer-research.buyer-persona-development
+  - id: positioning
+    name: Define positioning and value proposition
+    type: skill
+    ref: positioning.value-proposition-development
+  - id: gtm
+    name: Assemble GTM strategy
+    type: skill
+    ref: strategy.go-to-market-strategy
+  - id: channels
+    name: Plan launch channel mix
+    type: skill
+    ref: strategy.channel-mix-planning
+  - id: measurement
+    name: Define measurement and KPIs
+    type: skill
+    ref: analytics.kpi-framework
+  - id: launch_gate
+    name: Approval gate before launch or spend
+    type: approval_gate
+    approval_required: true
+outputs:
+  - market & customer
+  - positioning
+  - offer & messaging
+  - funnel
+  - channels
+  - measurement
+  - budget
+  - timeline
+  - risks
+  - approvals
+kpis:
+  - launch pipeline/revenue
+  - CAC
+  - activation
+approval_gates:
+  - launch_gate
+audit_requirements:
+  - record assumptions, targeting and approver
+rollback_guidance: Planning artefact; nothing launches until approved.

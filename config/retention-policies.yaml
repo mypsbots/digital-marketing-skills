@@ -1,0 +1,30 @@
+# Data retention policies. Actual retention must comply with local law and contracts.
+# These are conservative defaults; configure per deployment and jurisdiction.
+retention_policies:
+  audit_events:
+    retain_days: 2555 # ~7 years; adjust to legal/compliance requirements
+    description: Audit log of important actions and approvals.
+  approval_records:
+    retain_days: 2555
+    description: Approval requests and decisions.
+  campaign_drafts:
+    retain_days: 365
+    description: Draft campaign artefacts created by write tools in dry-run.
+  reports:
+    retain_days: 730
+    description: Generated marketing reports.
+  raw_connector_cache:
+    retain_days: 30
+    description: Cached read-only data from connectors.
+  pii_derived_data:
+    retain_days: 90
+    description: >-
+      Any derived data that could contain PII. Minimise, redact and delete on request.
+      Data-subject deletion requests override these defaults.
+
+principles:
+  - data_minimisation
+  - purpose_limitation
+  - honour_data_subject_requests
+  - delete_on_expiry
+  - encrypt_at_rest_and_in_transit

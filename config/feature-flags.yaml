@@ -1,0 +1,11 @@
+# Feature flags. Default to the safest configuration.
+feature_flags:
+  enable_live_connectors: false
+  enable_write_tools: false
+  enable_http_transport: true
+  enable_stdio_transport: true
+  enable_experimental_skills: false
+  enable_python_utilities: true
+  enable_policy_freshness_warnings: true
+  enable_audit_logging: true
+  enable_pii_redaction: true

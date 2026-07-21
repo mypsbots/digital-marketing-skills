@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mypsbots/digital-marketing-skills/schemas/experiment.schema.json",
+  "title": "Experiment",
+  "type": "object",
+  "required": ["hypothesis", "metric", "variants"],
+  "additionalProperties": true,
+  "properties": {
+    "id": { "type": "string" },
+    "hypothesis": {
+      "type": "string",
+      "description": "Because [observation], we believe [change] will cause [effect] measured by [metric]."
+    },
+    "metric": { "type": "string" },
+    "guardrail_metrics": { "type": "array", "items": { "type": "string" } },
+    "variants": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "is_control": { "type": "boolean" }
+        }
+      }
+    },
+    "baseline_rate": { "type": "number" },
+    "minimum_detectable_effect": { "type": "number" },
+    "confidence_level": { "type": "number", "default": 0.95 },
+    "power": { "type": "number", "default": 0.8 },
+    "sample_size_per_variant": { "type": "integer" },
+    "estimated_duration_days": { "type": "integer" },
+    "randomisation_unit": { "type": "string" },
+    "analysis_method": { "type": "string", "enum": ["frequentist", "bayesian"] },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "running", "concluded", "inconclusive", "abandoned"]
+    },
+    "result": { "type": "object" }
+  }
+}

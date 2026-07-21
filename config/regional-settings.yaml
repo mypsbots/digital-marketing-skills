@@ -1,0 +1,45 @@
+# Regional compliance and locale settings. Make locale, currency and timezone explicit.
+default_region: uk
+
+regions:
+  uk:
+    name: United Kingdom
+    locale: en-GB
+    currency: GBP
+    timezone: Europe/London
+    privacy_regimes: [uk-gdpr, pecr]
+    email_consent: opt-in
+    notes: PECR requires consent for most electronic marketing; soft opt-in has narrow scope.
+  eu:
+    name: European Union
+    locale: en-IE
+    currency: EUR
+    timezone: Europe/Brussels
+    privacy_regimes: [gdpr, eprivacy]
+    email_consent: opt-in
+  us:
+    name: United States
+    locale: en-US
+    currency: USD
+    timezone: America/New_York
+    privacy_regimes: [can-spam, ccpa, cpra]
+    email_consent: opt-out-with-rules
+    notes: State laws vary; CAN-SPAM governs commercial email; TCPA governs SMS/calls.
+  ca:
+    name: Canada
+    locale: en-CA
+    currency: CAD
+    timezone: America/Toronto
+    privacy_regimes: [casl, pipeda]
+    email_consent: opt-in
+  au:
+    name: Australia
+    locale: en-AU
+    currency: AUD
+    timezone: Australia/Sydney
+    privacy_regimes: [spam-act, privacy-act]
+    email_consent: opt-in
+
+disclaimer: >-
+  Regional settings are informational and not legal advice. Verify current requirements with a
+  qualified professional for each jurisdiction and platform.

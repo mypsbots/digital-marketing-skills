@@ -1,0 +1,45 @@
+[project]
+name = "digital-marketing-skills-py"
+version = "0.1.0"
+description = "Optional Python utilities for the Digital Marketing Skills MCP platform: data analysis, statistics, forecasting, CSV processing and content-quality evaluation."
+readme = "python/README.md"
+requires-python = ">=3.12"
+license = { text = "Apache-2.0" }
+authors = [{ name = "mypsbots" }]
+dependencies = [
+    "pydantic>=2.7",
+    "pandas>=2.2",
+    "numpy>=1.26",
+    "scipy>=1.13",
+    "python-dateutil>=2.9",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2",
+    "ruff>=0.5",
+    "mypy>=1.10",
+]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["dm_skills"]
+package-dir = { "dm_skills" = "python/dm_skills" }
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]

@@ -1,0 +1,455 @@
+# Central marketing metrics catalogue.
+# Every metric exposes its formula, inputs, interpretation and limitations.
+# Deterministic calculations are implemented in src/core/metric-engine.ts and
+# python/dm_skills/metrics.py. Do not mix incompatible definitions without a warning.
+version: 1.0.0
+last_reviewed: 2026-07-21
+
+metrics:
+  - id: impressions
+    name: Impressions
+    description: Number of times an ad or content was served/displayed.
+    formula: count(served_events)
+    unit: count
+    funnel_stage: awareness
+    channels: [paid-search, paid-social, display, organic-social]
+    interpretation: Volume of exposure; not a measure of attention or outcome.
+    limitations: Does not indicate unique people, quality or viewability.
+    common_mistakes: Treating impressions as reach or as a success metric on its own.
+
+  - id: reach
+    name: Reach
+    description: Number of unique people who saw the content at least once.
+    formula: count(distinct people_exposed)
+    unit: count
+    funnel_stage: awareness
+    channels: [paid-social, organic-social, display]
+    interpretation: Breadth of unique exposure.
+    limitations: Platform-estimated; cross-platform de-duplication is hard.
+    common_mistakes: Summing reach across platforms (double counts people).
+
+  - id: frequency
+    name: Frequency
+    description: Average number of times each reached person saw the content.
+    formula: impressions / reach
+    numerator: impressions
+    denominator: reach
+    unit: ratio
+    funnel_stage: awareness
+    channels: [paid-social, display]
+    interpretation: High frequency can indicate saturation or fatigue.
+    limitations: Averages hide distribution; some users see far more than others.
+    common_mistakes: Ignoring frequency caps leading to wasted spend and fatigue.
+
+  - id: ctr
+    name: Click-through rate
+    description: Share of impressions that resulted in a click.
+    formula: clicks / impressions
+    numerator: clicks
+    denominator: impressions
+    unit: percentage
+    funnel_stage: consideration
+    channels: [paid-search, paid-social, display, email]
+    interpretation: Relevance and creative/message resonance signal.
+    limitations: High CTR with low conversion may indicate misleading creative.
+    example: 1,200 clicks / 100,000 impressions = 1.2% CTR.
+
+  - id: cpc
+    name: Cost per click
+    description: Average cost paid per click.
+    formula: cost / clicks
+    numerator: cost
+    denominator: clicks
+    unit: currency
+    channels: [paid-search, paid-social, display]
+    interpretation: Efficiency of buying traffic; compare within channel/auction.
+    limitations: Says nothing about click quality or downstream conversion.
+
+  - id: cpm
+    name: Cost per thousand impressions
+    description: Cost to serve 1,000 impressions.
+    formula: (cost / impressions) * 1000
+    unit: currency
+    channels: [paid-social, display, video]
+    interpretation: Media buying efficiency for awareness.
+
+  - id: engagement_rate
+    name: Engagement rate
+    description: Share of audience who engaged (like, comment, share, save, click).
+    formula: engagements / (reach or impressions or followers)
+    unit: percentage
+    funnel_stage: consideration
+    channels: [organic-social, paid-social]
+    limitations: Definition of engagement and denominator varies by platform; state which.
+    common_mistakes: Comparing engagement rates across platforms with different denominators.
+
+  - id: video_view_rate
+    name: Video view rate
+    description: Share of impressions that became qualifying video views.
+    formula: video_views / impressions
+    unit: percentage
+    channels: [video, paid-social]
+    limitations: "View" definitions differ (3s, 2s, 25%, complete); state the definition.
+
+  - id: landing_page_views
+    name: Landing-page views
+    description: Number of times a landing page finished loading after a click.
+    formula: count(landing_page_view_events)
+    unit: count
+    channels: [paid-social, paid-search]
+    interpretation: Difference vs clicks reveals bounce/latency/tracking loss.
+
+  - id: sessions
+    name: Sessions
+    description: Distinct visit sessions to a property.
+    formula: count(sessions)
+    unit: count
+    interpretation: Traffic volume; define session timeout and attribution.
+
+  - id: engaged_sessions
+    name: Engaged sessions
+    description: Sessions with meaningful engagement (e.g. >10s, conversion, or 2+ views).
+    formula: count(sessions where engaged = true)
+    unit: count
+    interpretation: Quality-adjusted traffic; definition is platform-specific (state it).
+
+  - id: conversion_rate
+    name: Conversion rate
+    description: Share of sessions/visitors/clicks that completed the conversion action.
+    formula: conversions / denominator
+    numerator: conversions
+    denominator: sessions | users | clicks (state which)
+    unit: percentage
+    funnel_stage: decision
+    common_mistakes: Changing the denominator between periods; not defining the conversion.
+
+  - id: cost_per_conversion
+    name: Cost per conversion
+    description: Average cost per completed conversion.
+    formula: cost / conversions
+    unit: currency
+    funnel_stage: decision
+
+  - id: cost_per_lead
+    name: Cost per lead (CPL)
+    description: Average cost per lead captured.
+    formula: cost / leads
+    unit: currency
+    funnel_stage: decision
+    limitations: Lead quality varies; pair with qualified-lead metrics.
+
+  - id: qualified_lead_rate
+    name: Qualified lead rate
+    description: Share of leads that meet the qualification definition (MQL/SQL).
+    formula: qualified_leads / leads
+    unit: percentage
+    limitations: Depends on qualification definition; keep it stable.
+
+  - id: cost_per_qualified_lead
+    name: Cost per qualified lead
+    description: Cost to acquire one qualified lead.
+    formula: cost / qualified_leads
+    unit: currency
+
+  - id: cac
+    name: Customer acquisition cost
+    description: Fully-loaded cost to acquire one new customer.
+    formula: (marketing_cost + sales_cost) / new_customers
+    numerator: marketing_cost + sales_cost
+    denominator: new_customers
+    unit: currency
+    interpretation: Compare against LTV and payback; state what costs are included.
+    common_mistakes: Excluding salaries/tools; mixing blended and paid-only CAC.
+
+  - id: revenue
+    name: Revenue
+    description: Gross revenue attributed to the activity/period.
+    formula: sum(order_value)
+    unit: currency
+
+  - id: gross_profit
+    name: Gross profit
+    description: Revenue minus cost of goods sold.
+    formula: revenue - cogs
+    unit: currency
+
+  - id: contribution_margin
+    name: Contribution margin
+    description: Revenue minus variable costs (COGS, shipping, fees, and often ad cost).
+    formula: revenue - variable_costs
+    unit: currency
+    industries: [ecommerce, retail]
+    interpretation: Profit basis for margin-aware marketing decisions.
+
+  - id: aov
+    name: Average order value
+    description: Average revenue per order.
+    formula: revenue / orders
+    unit: currency
+    industries: [ecommerce, retail]
+
+  - id: units_per_transaction
+    name: Units per transaction
+    description: Average number of items per order.
+    formula: units_sold / transactions
+    unit: ratio
+    industries: [ecommerce, retail]
+
+  - id: roas
+    name: Return on ad spend
+    description: Revenue generated per unit of ad spend.
+    formula: attributed_revenue / ad_spend
+    numerator: attributed_revenue
+    denominator: ad_spend
+    unit: ratio
+    interpretation: Channel efficiency; state attribution model and window.
+    limitations: Attribution-dependent; not the same as profit or incrementality.
+
+  - id: mer
+    name: Marketing efficiency ratio
+    description: Total revenue divided by total marketing spend (blended).
+    formula: total_revenue / total_marketing_spend
+    unit: ratio
+    industries: [ecommerce, retail]
+    interpretation: Blended efficiency; robust to attribution gaps.
+
+  - id: marketing_roi
+    name: Marketing ROI
+    description: Profit return relative to marketing investment.
+    formula: (attributed_gross_profit - marketing_cost) / marketing_cost
+    unit: percentage
+    interpretation: Use profit, not revenue, for a true ROI.
+
+  - id: ltv
+    name: Customer lifetime value
+    description: Expected gross profit from a customer over their lifetime.
+    formula: avg_order_value * purchase_frequency * gross_margin * avg_lifespan
+    unit: currency
+    limitations: Model-dependent; state whether revenue-LTV or profit-LTV.
+
+  - id: ltv_cac_ratio
+    name: LTV-to-CAC ratio
+    description: Ratio of lifetime value to acquisition cost.
+    formula: ltv / cac
+    numerator: ltv
+    denominator: cac
+    unit: ratio
+    interpretation: Common heustic ~3:1 for healthy SaaS; context-dependent, not a rule.
+
+  - id: cac_payback
+    name: CAC payback period
+    description: Months to recover CAC from gross-margin contribution.
+    formula: cac / (monthly_recurring_gross_profit_per_customer)
+    unit: months
+    industries: [saas]
+
+  - id: trial_conversion
+    name: Trial-to-paid conversion
+    description: Share of trials that convert to paid.
+    formula: paid_conversions / trials_started
+    unit: percentage
+    industries: [saas]
+
+  - id: activation_rate
+    name: Activation rate
+    description: Share of new users reaching the activation milestone.
+    formula: activated_users / new_users
+    unit: percentage
+    industries: [saas]
+
+  - id: churn_rate
+    name: Churn rate
+    description: Share of customers lost in a period.
+    formula: customers_lost / customers_at_start
+    unit: percentage
+    interpretation: Track logo churn and revenue churn separately.
+
+  - id: retention_rate
+    name: Retention rate
+    description: Share of customers retained in a period.
+    formula: 1 - churn_rate
+    unit: percentage
+
+  - id: expansion_revenue
+    name: Expansion revenue
+    description: Additional revenue from existing customers (upsell/cross-sell).
+    formula: sum(upsell + cross_sell + seat_expansion)
+    unit: currency
+    industries: [saas]
+
+  - id: mrr
+    name: Monthly recurring revenue
+    description: Normalised monthly subscription revenue.
+    formula: sum(normalised_monthly_subscription_value)
+    unit: currency
+    industries: [saas]
+
+  - id: arr
+    name: Annual recurring revenue
+    description: Annualised recurring revenue.
+    formula: mrr * 12
+    unit: currency
+    industries: [saas]
+
+  - id: nrr
+    name: Net revenue retention
+    description: Revenue retained plus expansion minus churn/contraction, existing cohort.
+    formula: (starting_mrr + expansion - contraction - churn) / starting_mrr
+    unit: percentage
+    industries: [saas]
+
+  - id: grr
+    name: Gross revenue retention
+    description: Revenue retained excluding expansion.
+    formula: (starting_mrr - contraction - churn) / starting_mrr
+    unit: percentage
+    industries: [saas]
+
+  - id: open_rate
+    name: Email open rate
+    description: Share of delivered emails opened.
+    formula: unique_opens / delivered
+    unit: percentage
+    channels: [email]
+    limitations: Inflated/unreliable due to privacy features (e.g. MPP); trend with caution.
+
+  - id: email_click_rate
+    name: Email click rate
+    description: Share of delivered emails with a click.
+    formula: unique_clicks / delivered
+    unit: percentage
+    channels: [email]
+
+  - id: click_to_open_rate
+    name: Click-to-open rate (CTOR)
+    description: Share of openers who clicked.
+    formula: unique_clicks / unique_opens
+    unit: percentage
+    channels: [email]
+
+  - id: unsubscribe_rate
+    name: Unsubscribe rate
+    description: Share of recipients who unsubscribed.
+    formula: unsubscribes / delivered
+    unit: percentage
+    channels: [email]
+
+  - id: email_bounce_rate
+    name: Email bounce rate
+    description: Share of sends that bounced (hard + soft).
+    formula: bounces / sends
+    unit: percentage
+    channels: [email]
+
+  - id: spam_complaint_rate
+    name: Spam complaint rate
+    description: Share of delivered emails marked as spam.
+    formula: complaints / delivered
+    unit: percentage
+    channels: [email]
+    interpretation: Keep well below ~0.1%; high rates harm deliverability.
+
+  - id: organic_traffic
+    name: Organic traffic
+    description: Sessions/users arriving via organic search.
+    formula: count(sessions where source = organic-search)
+    unit: count
+    channels: [organic-search]
+
+  - id: keyword_visibility
+    name: Keyword visibility
+    description: Weighted share of tracked keywords ranking in visible positions.
+    formula: weighted(ranking_positions over tracked_keywords)
+    unit: index
+    channels: [organic-search]
+    limitations: Tool-specific index; personalised/localised SERPs vary.
+
+  - id: indexed_pages
+    name: Indexed pages
+    description: Number of pages indexed by search engines.
+    formula: count(indexed_pages)
+    unit: count
+    channels: [organic-search]
+
+  - id: crawl_errors
+    name: Crawl errors
+    description: Number of URLs returning crawl errors.
+    formula: count(crawl_error_urls)
+    unit: count
+    channels: [organic-search]
+
+  - id: backlinks
+    name: Backlinks
+    description: Total inbound links.
+    formula: count(inbound_links)
+    unit: count
+    channels: [organic-search]
+    common_mistakes: Valuing raw backlink counts over referring-domain quality.
+
+  - id: referring_domains
+    name: Referring domains
+    description: Number of unique domains linking to the site.
+    formula: count(distinct referring_domains)
+    unit: count
+    channels: [organic-search]
+
+  - id: share_of_voice
+    name: Share of voice
+    description: Brand's share of visibility/impressions vs competitor set.
+    formula: brand_visibility / total_category_visibility
+    unit: percentage
+
+  - id: lead_to_opportunity_rate
+    name: Lead-to-opportunity rate
+    description: Share of leads that become sales opportunities.
+    formula: opportunities / leads
+    unit: percentage
+    industries: [saas, real-estate]
+
+  - id: opportunity_to_customer_rate
+    name: Opportunity-to-customer rate
+    description: Win rate from opportunity to closed customer.
+    formula: customers_won / opportunities
+    unit: percentage
+
+  - id: sales_cycle_length
+    name: Sales-cycle length
+    description: Average time from opportunity creation to close.
+    formula: mean(close_date - opportunity_created_date)
+    unit: days
+
+  - id: store_visits
+    name: Store visits
+    description: Measured or modelled visits to a physical location.
+    formula: count(store_visits)
+    unit: count
+    industries: [retail]
+    limitations: Often modelled/estimated; state methodology and confidence.
+
+  - id: footfall_conversion
+    name: Footfall conversion
+    description: Share of store visitors who purchase.
+    formula: transactions / store_visits
+    unit: percentage
+    industries: [retail]
+
+  - id: repeat_purchase_rate
+    name: Repeat-purchase rate
+    description: Share of customers who purchase more than once.
+    formula: repeat_customers / total_customers
+    unit: percentage
+    industries: [ecommerce, retail]
+
+  - id: viewing_booking_rate
+    name: Viewing-booking rate (lead-to-viewing)
+    description: Share of property leads that book a viewing.
+    formula: viewings_booked / leads
+    unit: percentage
+    industries: [real-estate]
+
+  - id: viewing_to_offer_rate
+    name: Viewing-to-offer rate
+    description: Share of viewings that result in an offer.
+    formula: offers / viewings
+    unit: percentage
+    industries: [real-estate]
