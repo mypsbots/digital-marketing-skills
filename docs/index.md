@@ -3,7 +3,7 @@
 A Model Context Protocol (MCP) server and a curated library of digital-marketing skills that lets
 AI assistants discover and apply industry-standard marketing methodology safely.
 
-- **122 skills** across 27 categories, each a rich `SKILL.md` (methodology, decision rules,
+- **142 skills** across 29 categories, each a rich `SKILL.md` (methodology, decision rules,
   checklists, examples, KPIs).
 - **MCP server** exposing resources, 30 prompts and controlled tools.
 - **8 approval-gated workflows** and per-industry playbooks.
