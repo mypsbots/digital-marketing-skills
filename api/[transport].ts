@@ -69,14 +69,24 @@ function unauthorized(): Response {
   );
 }
 
-// Optional static bearer-token gate. When DM_MCP_HTTP_AUTH_TOKEN is set (strongly
-// recommended for public deployments) every request must present a matching
-// `Authorization: Bearer <token>` header.
+// Optional static token gate. When DM_MCP_HTTP_AUTH_TOKEN is set (strongly
+// recommended for public deployments) every request must present a matching token,
+// supplied EITHER as an `Authorization: Bearer <token>` header (Cursor, Claude,
+// VS Code, Gemini CLI) OR as a `?key=<token>` / `?token=<token>` query parameter.
+// The query-parameter fallback exists for clients such as ChatGPT developer-mode
+// apps, whose only auth choices are "OAuth" and "No authentication" — with "No
+// authentication" selected, the secret travels in the URL instead of a header.
+function extractToken(request: Request): string {
+  const header = request.headers.get('authorization') ?? '';
+  if (header.startsWith('Bearer ')) return header.slice('Bearer '.length);
+  const params = new URL(request.url).searchParams;
+  return params.get('key') ?? params.get('token') ?? '';
+}
+
 async function handler(request: Request): Promise<Response> {
   const expected = process.env.DM_MCP_HTTP_AUTH_TOKEN;
   if (expected) {
-    const header = request.headers.get('authorization') ?? '';
-    const provided = header.startsWith('Bearer ') ? header.slice('Bearer '.length) : '';
+    const provided = extractToken(request);
     if (provided.length !== expected.length || provided !== expected) {
       return unauthorized();
     }

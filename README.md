@@ -94,11 +94,41 @@ local checkout. The server bundles its skills/config and resolves them relative 
 
 - **Claude Desktop:** add the block above to `claude_desktop_config.json`.
 - **Gemini CLI:** add it under `mcpServers` in `~/.gemini/settings.json`.
-- **ChatGPT** (and other remote-only clients) require a **hosted HTTP endpoint** rather than a local
-  command. Run the Streamable HTTP transport (`npm run start:http`), deploy it behind HTTPS, and add
-  it as a custom connector: `{ "type": "http", "url": "https://your-host/mcp" }` with an
-  `Authorization: Bearer <token>` header. See [`docs/deployment.md`](./docs/deployment.md) for
-  ready-to-use Docker / Render / Fly configs and the token setup.
+- **ChatGPT** (and other remote-only clients) require a **hosted HTTPS endpoint** rather than a local
+  command — see the next section.
+
+### Hosted HTTPS endpoint (remote clients)
+
+Deploy the Streamable HTTP transport behind HTTPS (see [`docs/deployment.md`](./docs/deployment.md)
+for Vercel / Render / Fly / Docker). The endpoint is `/api/mcp` on Vercel, or `/mcp` when self-hosted.
+When `DM_MCP_HTTP_AUTH_TOKEN` is set, the token may be supplied **either** as an
+`Authorization: Bearer <token>` header **or** as a `?key=<token>` query parameter.
+
+**Cursor / Claude (web or desktop) / VS Code — header auth:**
+
+```json
+{
+  "mcpServers": {
+    "digital-marketing-skills": {
+      "url": "https://<project>.vercel.app/api/mcp",
+      "headers": { "Authorization": "Bearer <DM_MCP_HTTP_AUTH_TOKEN>" }
+    }
+  }
+}
+```
+
+**ChatGPT (developer-mode app) — query-parameter auth:**
+
+ChatGPT's app form only offers **OAuth** and **No authentication** (no static-header field), so pass the
+token in the URL and select **No authentication**:
+
+1. Settings → **Security and login** → enable **Developer mode**.
+2. Settings → **Plugins** (or `chatgpt.com/plugins`) → **+ / Create**:
+   - **Name:** `Digital Marketing Skills`
+   - **Server URL:** `https://<project>.vercel.app/api/mcp?key=<DM_MCP_HTTP_AUTH_TOKEN>`
+   - **Authentication:** **No authentication**
+   - Tick the risk acknowledgement, then **Create**.
+3. In a chat, click **+** → **Developer mode** → enable the app (required per conversation).
 
 ### From source (no npm)
 

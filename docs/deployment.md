@@ -74,10 +74,33 @@ HTTPS.
 
 ## Connect ChatGPT
 
-In ChatGPT, add a **custom connector** (Settings → Connectors, developer mode):
+As of the December 2025 rename, ChatGPT calls these **apps** (formerly "connectors") and configures
+them through **Developer mode**, not a "Connectors" menu.
 
-- **URL:** `https://your-host/mcp` (Docker/Render/Fly) or `https://<project>.vercel.app/api/mcp` (Vercel)
-- **Authentication:** custom header → `Authorization: Bearer <your DM_MCP_HTTP_AUTH_TOKEN>`
+1. **Enable Developer mode:** Settings → **Security and login** → toggle **Developer mode** on.
+2. **Create the app:** Settings → **Plugins** (or open `chatgpt.com/plugins`) → **+ / Create**.
+   - **Name:** `Digital Marketing Skills`
+   - **Connection / Server URL:** your MCP URL **with the token as a query parameter** (see next point).
+   - **Authentication:** **No authentication**.
+3. **Authentication caveat:** ChatGPT's app form only offers **OAuth** and **No authentication** — there
+   is no static-header / API-key field. Because this server uses a static token, pass it in the URL:
+
+   ```text
+   https://<project>.vercel.app/api/mcp?key=<your DM_MCP_HTTP_AUTH_TOKEN>
+   ```
+
+   The server accepts the token via the `?key=` (or `?token=`) query parameter as well as the
+   `Authorization: Bearer` header, so "No authentication" works while the endpoint stays gated.
+4. **Enable per chat:** custom apps are off by default in each conversation — in the composer, click
+   **+** → **Developer mode** → enable **Digital Marketing Skills**.
+
+> Self-hosted (Docker/Render/Fly) endpoints are at `/mcp`; Vercel is at `/api/mcp`. The `?key=` trick
+> works on any of them. If you would rather not put the token in the URL, run the endpoint fully public
+> (unset `DM_MCP_HTTP_AUTH_TOKEN`) and select "No authentication" — only advisable because the server is
+> read-only and approval-gated by default.
+
+Header-based clients (Cursor, Claude, VS Code, Gemini CLI) should keep using
+`Authorization: Bearer <your DM_MCP_HTTP_AUTH_TOKEN>`.
 
 ## Verify
 
