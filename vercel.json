@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "functions": {
+    "api/[transport].ts": {
+      "maxDuration": 60,
+      "includeFiles": "{skills,config,workflows,templates,industries,schemas}/**"
+    }
+  }
+}

@@ -25,7 +25,32 @@ The server exposes:
    `DM_MCP_HTTP_AUTH_TOKEN`. Copy that token from the dashboard.
 4. Your endpoint: `https://<service>.onrender.com/mcp`.
 
-## Option B — Fly.io (Docker)
+## Option B — Vercel (serverless, recommended)
+
+Vercel hosts the MCP server as a serverless function via [`api/[transport].ts`](../api/%5Btransport%5D.ts)
+(using [`mcp-handler`](https://www.npmjs.com/package/mcp-handler)) with config in [`vercel.json`](../vercel.json).
+The skill/config/workflow files are bundled into the function with `includeFiles`, and the server context
+is built once per warm instance.
+
+Unlike the Docker options, the Vercel endpoint lives at **`/api/mcp`** (not `/mcp`), and there is no
+`/health` route — health is implicit in a successful `initialize`.
+
+```bash
+# From the repo root, with the Vercel CLI:
+vercel                                                   # first deploy (creates the project)
+vercel env add DM_MCP_HTTP_AUTH_TOKEN production         # paste a strong token (e.g. openssl rand -hex 32)
+vercel --prod                                            # promote to production
+```
+
+Endpoint: `https://<project>.vercel.app/api/mcp`.
+
+Notes:
+
+- Set `DM_MCP_HTTP_AUTH_TOKEN` as a Project Environment Variable to require the bearer token.
+- `npm install` runs the `prepare` script which builds `dist/`; the function imports the compiled output.
+- SSE is disabled (deprecated in the MCP spec); stateless Streamable HTTP needs no Redis.
+
+## Option C — Fly.io (Docker)
 
 ```bash
 fly launch --no-deploy                                   # creates the app, keeps fly.toml
@@ -35,7 +60,7 @@ fly deploy
 
 Endpoint: `https://<app>.fly.dev/mcp`.
 
-## Option C — any Docker host
+## Option D — any Docker host
 
 ```bash
 docker build -t dm-skills-mcp .
@@ -51,15 +76,17 @@ HTTPS.
 
 In ChatGPT, add a **custom connector** (Settings → Connectors, developer mode):
 
-- **URL:** `https://your-host/mcp`
+- **URL:** `https://your-host/mcp` (Docker/Render/Fly) or `https://<project>.vercel.app/api/mcp` (Vercel)
 - **Authentication:** custom header → `Authorization: Bearer <your DM_MCP_HTTP_AUTH_TOKEN>`
 
 ## Verify
 
 ```bash
+# Docker/Render/Fly only — Vercel has no /health route:
 curl https://your-host/health
 # {"status":"ok","skills":160,"read_only":true}
 
+# Use /api/mcp instead of /mcp on Vercel:
 curl -s -X POST https://your-host/mcp \
   -H "Authorization: Bearer $DM_MCP_HTTP_AUTH_TOKEN" \
   -H "Content-Type: application/json" \
