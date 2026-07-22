@@ -1,40 +1,40 @@
-# syntax=docker/dockerfile:1
-
-# ---- Build stage ----
-FROM node:22-slim AS build
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
-COPY tsconfig.json ./
-COPY src ./src
-COPY scripts ./scripts
-RUN npm run build
-
-# ---- Runtime stage ----
-FROM node:22-slim AS runtime
-ENV NODE_ENV=production
+# Multi-stage build for the Digital Marketing Skills MCP server (HTTP transport).
+# --- build stage -------------------------------------------------------------
+FROM node:20-alpine AS build
 WORKDIR /app
 
-# Non-root user
-RUN groupadd --system app && useradd --system --gid app --home /app app
+# Install deps without triggering the `prepare` build (no source yet).
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts
 
-COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev && npm cache clean --force
+# Build, then drop dev dependencies for a lean runtime.
+COPY . .
+RUN npm run build && npm prune --omit=dev --ignore-scripts
 
+# --- runtime stage -----------------------------------------------------------
+FROM node:20-alpine AS runtime
+WORKDIR /app
+
+ENV NODE_ENV=production \
+    DM_MCP_TRANSPORT=http \
+    DM_MCP_HTTP_HOST=0.0.0.0 \
+    DM_MCP_HTTP_PORT=8080
+
+# Runtime artefacts + bundled data (skills/config/workflows/etc.).
+COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
-COPY skills ./skills
-COPY workflows ./workflows
-COPY resources ./resources
-COPY templates ./templates
-COPY config ./config
-COPY schemas ./schemas
+COPY --from=build /app/skills ./skills
+COPY --from=build /app/config ./config
+COPY --from=build /app/workflows ./workflows
+COPY --from=build /app/templates ./templates
+COPY --from=build /app/industries ./industries
+COPY --from=build /app/schemas ./schemas
+COPY --from=build /app/package.json ./package.json
 
-USER app
+EXPOSE 8080
 
-# Read-only and dry-run safe defaults
-ENV DM_MCP_READ_ONLY=true \
-    DM_MCP_WRITE_DRY_RUN_DEFAULT=true \
-    DM_MCP_REQUIRE_APPROVAL=true \
-    DM_MCP_TRANSPORT=stdio
+# Simple healthcheck against the built-in endpoint.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:'+(process.env.DM_MCP_HTTP_PORT||process.env.PORT||8080)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
 
-ENTRYPOINT ["node", "dist/server/index.js"]
+CMD ["node", "dist/server/index.js", "--transport", "http"]

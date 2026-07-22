@@ -1,0 +1,29 @@
+# Fly.io deployment (https://fly.io). Deploy:
+#   fly launch --no-deploy        # once, to create the app (keep this file)
+#   fly secrets set DM_MCP_HTTP_AUTH_TOKEN=$(openssl rand -hex 32)
+#   fly deploy
+app = "digital-marketing-skills-mcp"
+primary_region = "lhr"
+
+[build]
+
+[env]
+  DM_MCP_TRANSPORT = "http"
+  DM_MCP_HTTP_HOST = "0.0.0.0"
+  DM_MCP_HTTP_PORT = "8080"
+  DM_MCP_READ_ONLY = "true"
+  DM_MCP_REQUIRE_APPROVAL = "true"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    method = "get"
+    path = "/health"
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"

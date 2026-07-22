@@ -1,0 +1,15 @@
+node_modules
+dist
+.git
+.github
+Master-Prompt
+docs
+site
+tests
+evals
+examples
+python
+*.log
+.env
+.env.*
+coverage

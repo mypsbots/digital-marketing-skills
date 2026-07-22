@@ -1,50 +1,68 @@
-# Deployment
+# Deploying the MCP server over HTTPS (for ChatGPT & remote clients)
 
-The server runs as a stdio process (for MCP clients) or over Streamable HTTP. Keep the safe
-defaults (read-only, dry-run, approvals required, mock connectors) unless you have a specific need.
+Local clients (Cursor, Claude Desktop, Gemini CLI) launch the server over **stdio** via `npx`.
+Remote-only clients — notably **ChatGPT connectors** — need a **hosted HTTPS endpoint**. This guide
+covers hosting the Streamable HTTP transport.
 
-## Local
+The server exposes:
+
+- `POST /mcp` — the MCP endpoint (stateless Streamable HTTP).
+- `GET /health` — health check (`{ "status": "ok", ... }`), always unauthenticated.
+
+## Security defaults
+
+- Set `DM_MCP_HTTP_AUTH_TOKEN` to require `Authorization: Bearer <token>` on `POST /mcp`.
+  `/health` stays open for platform health checks.
+- Keep `DM_MCP_READ_ONLY=true` and `DM_MCP_REQUIRE_APPROVAL=true` (the defaults) for a public endpoint.
+- Bind to `0.0.0.0` in a container (`DM_MCP_HTTP_HOST=0.0.0.0`); the platform's `PORT` is honoured
+  automatically.
+
+## Option A — Render (Docker blueprint)
+
+1. Push this repo to GitHub (already done).
+2. Render → **New → Blueprint** → select the repo. It reads [`render.yaml`](../render.yaml).
+3. Render builds the [`Dockerfile`](../Dockerfile), injects `PORT`, terminates TLS, and generates
+   `DM_MCP_HTTP_AUTH_TOKEN`. Copy that token from the dashboard.
+4. Your endpoint: `https://<service>.onrender.com/mcp`.
+
+## Option B — Fly.io (Docker)
 
 ```bash
-npm ci
-npm run build
-npm run start:stdio          # for MCP clients
-npm run start:http           # HTTP transport; GET /health
+fly launch --no-deploy                                   # creates the app, keeps fly.toml
+fly secrets set DM_MCP_HTTP_AUTH_TOKEN=$(openssl rand -hex 32)
+fly deploy
 ```
 
-Configuration is via environment variables (see `.env.example`), including transport, HTTP
-host/port, log level/format, safety flags, directory paths and regional defaults.
+Endpoint: `https://<app>.fly.dev/mcp`.
 
-## Docker
-
-A multi-stage `Dockerfile` builds the server and runs it as a **non-root** user with safe
-defaults; `docker-compose.yml` runs it over HTTP.
+## Option C — any Docker host
 
 ```bash
-docker compose up --build
+docker build -t dm-skills-mcp .
+docker run -p 8080:8080 \
+  -e DM_MCP_HTTP_AUTH_TOKEN=$(openssl rand -hex 32) \
+  dm-skills-mcp
 ```
 
-## Environment variables (selected)
+Put it behind a TLS-terminating reverse proxy (Caddy, nginx, a load balancer) so the public URL is
+HTTPS.
 
-| Variable | Default | Purpose |
-| --- | --- | --- |
-| `DM_MCP_TRANSPORT` | `stdio` | `stdio` or `http` |
-| `DM_MCP_HTTP_HOST` / `DM_MCP_HTTP_PORT` | `127.0.0.1` / `8080` | HTTP bind |
-| `DM_MCP_READ_ONLY` | `true` | Disable non-dry-run writes |
-| `DM_MCP_WRITE_DRY_RUN_DEFAULT` | `true` | Writes are dry-run unless overridden |
-| `DM_MCP_REQUIRE_APPROVAL` | `true` | Enforce approval gates |
-| `DM_MCP_ENABLE_LIVE_CONNECTORS` | `false` | Opt-in to live connectors |
-| `DM_MCP_FRESHNESS_WINDOW_DAYS` | `180` | Skill freshness window |
+## Connect ChatGPT
 
-## CI
+In ChatGPT, add a **custom connector** (Settings → Connectors, developer mode):
 
-GitHub Actions run build, typecheck, lint, unit tests, `validate:skills`, `evaluate`, the Python
-suite, secret scanning and docs build. Releases are tag-driven.
+- **URL:** `https://your-host/mcp`
+- **Authentication:** custom header → `Authorization: Bearer <your DM_MCP_HTTP_AUTH_TOKEN>`
 
-## Documentation site
+## Verify
 
 ```bash
-pip install mkdocs mkdocs-material
-mkdocs serve      # local preview
-mkdocs build      # static site in ./site
+curl https://your-host/health
+# {"status":"ok","skills":160,"read_only":true}
+
+curl -s -X POST https://your-host/mcp \
+  -H "Authorization: Bearer $DM_MCP_HTTP_AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
 ```

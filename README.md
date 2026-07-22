@@ -27,8 +27,10 @@ human-in-the-loop controls built in by default**.
   engine, an audit log and a workflow planner.
 - **Optional Python utilities** (`python/dm_skills`) — metrics and experiment statistics
   (sample size, two-proportion z-test), dependency-light and reproducible.
-- **Governance & safety** — Apache-2.0 licence, security model, compliance-first defaults,
-  schemas, CI, and a deterministic evaluation harness.
+- **Governance & safety** — Apache-2.0 licence (code) with a separate name/logo
+  [trademark notice](./TRADEMARK.md), security model, compliance-first defaults, schemas, CI, and a
+  deterministic evaluation harness. See [`docs/repository-protection.md`](./docs/repository-protection.md)
+  for branch protection and ownership guidance.
 
 ## Safety model (defaults)
 
@@ -94,7 +96,9 @@ local checkout. The server bundles its skills/config and resolves them relative 
 - **Gemini CLI:** add it under `mcpServers` in `~/.gemini/settings.json`.
 - **ChatGPT** (and other remote-only clients) require a **hosted HTTP endpoint** rather than a local
   command. Run the Streamable HTTP transport (`npm run start:http`), deploy it behind HTTPS, and add
-  it as a custom connector: `{ "type": "http", "url": "https://your-host/mcp" }`.
+  it as a custom connector: `{ "type": "http", "url": "https://your-host/mcp" }` with an
+  `Authorization: Bearer <token>` header. See [`docs/deployment.md`](./docs/deployment.md) for
+  ready-to-use Docker / Render / Fly configs and the token setup.
 
 ### From source (no npm)
 

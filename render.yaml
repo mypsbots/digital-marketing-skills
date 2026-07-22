@@ -1,0 +1,23 @@
+# Render deployment (https://render.com). Deploy: New > Blueprint > point at this repo.
+# Render injects PORT automatically and terminates TLS, giving you an HTTPS URL.
+services:
+  - type: web
+    name: digital-marketing-skills-mcp
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DM_MCP_TRANSPORT
+        value: http
+      - key: DM_MCP_HTTP_HOST
+        value: 0.0.0.0
+      # Bearer token required on POST /mcp. Render generates a strong value;
+      # copy it from the dashboard into your MCP client's Authorization header.
+      - key: DM_MCP_HTTP_AUTH_TOKEN
+        generateValue: true
+      # Keep safe production defaults (read-only, approvals on).
+      - key: DM_MCP_READ_ONLY
+        value: "true"
+      - key: DM_MCP_REQUIRE_APPROVAL
+        value: "true"

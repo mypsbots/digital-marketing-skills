@@ -8,7 +8,7 @@ const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '
 
 export interface AppConfig {
   transport: 'stdio' | 'http';
-  http: { host: string; port: number };
+  http: { host: string; port: number; authToken?: string };
   log: { level: string; format: 'json' | 'pretty'; redactPii: boolean };
   safety: {
     readOnly: boolean;
@@ -66,7 +66,10 @@ export function loadConfig(argv: string[] = process.argv.slice(2)): AppConfig {
     transport,
     http: {
       host: process.env.DM_MCP_HTTP_HOST ?? '127.0.0.1',
-      port: int(process.env.DM_MCP_HTTP_PORT, 8080),
+      // Honour the platform-provided PORT (Render, Fly, Railway, etc.) as a fallback.
+      port: int(process.env.DM_MCP_HTTP_PORT ?? process.env.PORT, 8080),
+      // Optional bearer token; when set, POST /mcp requires Authorization: Bearer <token>.
+      authToken: process.env.DM_MCP_HTTP_AUTH_TOKEN || undefined,
     },
     log: {
       level: process.env.DM_MCP_LOG_LEVEL ?? 'info',
