@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digital Marketing Skills — MCP server</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        max-width: 46rem; margin: 4rem auto; padding: 0 1.25rem; line-height: 1.55;
+      }
+      h1 { font-size: 1.6rem; margin-bottom: 0.25rem; }
+      code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+      pre { background: rgba(127,127,127,0.12); padding: 1rem; border-radius: 8px; overflow:auto; }
+      .muted { opacity: 0.7; }
+      a { color: inherit; }
+    </style>
+  </head>
+  <body>
+    <h1>Digital Marketing Skills — MCP server</h1>
+    <p class="muted">Model Context Protocol server exposing a library of digital-marketing skills, prompts and tools.</p>
+
+    <h2>Endpoint</h2>
+    <p>Streamable HTTP MCP endpoint:</p>
+    <pre>POST /api/mcp</pre>
+    <p>
+      When <code>DM_MCP_HTTP_AUTH_TOKEN</code> is configured, send
+      <code>Authorization: Bearer &lt;token&gt;</code> with every request.
+    </p>
+
+    <h2>Connect a client</h2>
+    <p>
+      Add this URL as a custom MCP connector (ChatGPT, Claude web, etc.). See the
+      <a href="https://github.com/mypsbots/digital-marketing-skills">repository</a> for full setup docs.
+    </p>
+  </body>
+</html>
