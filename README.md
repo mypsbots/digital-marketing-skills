@@ -11,12 +11,13 @@ human-in-the-loop controls built in by default**.
 
 ## What's inside
 
-- **142 skills** across 29 categories (`skills/00-foundation` … `skills/28-platform-playbooks`),
+- **160 skills** across 31 categories (`skills/00-foundation` … `skills/30-optimisation-disciplines`),
   each a single rich `SKILL.md` with YAML metadata, methodology, decision rules, quality &
   compliance checklists, failure conditions, worked examples, KPIs and MCP mappings.
 - **MCP server** (TypeScript/Node) exposing:
   - **Resources** — skill & workflow catalogues, individual skills/workflows, metrics/channels/
-    funnel/industry catalogues, and per-industry playbooks (`marketing://…`).
+    funnel/industry catalogues, per-industry playbooks, and advertising-policy summaries
+    (`marketing://policies/catalogue`, `marketing://policies/{network}`) (`marketing://…`).
   - **Prompts** — 30 reusable, structured marketing prompts (audit, strategy, GTM, SEO cluster,
     Google/Meta ads, email nurture, reporting, budgeting, industry growth plans, compliance).
   - **Tools** — read-only discovery/metric tools plus controlled write tools that respect
@@ -73,7 +74,7 @@ Copy `.env.example` to `.env` to adjust transport, safety defaults and directori
 ## Repository layout
 
 ```
-skills/            # 142 SKILL.md files across 29 categories
+skills/            # 160 SKILL.md files across 31 categories
 workflows/         # multi-step, approval-gated workflow definitions (YAML)
 industries/        # per-industry playbooks (saas, ecommerce, real-estate, retail)
 templates/         # reusable output templates (plans, briefs, reports, approvals)
@@ -111,7 +112,8 @@ pytest && ruff check python && mypy python/dm_skills
 `18-marketing-automation`, `19-compliance-privacy`, `20-saas-growth`,
 `21-product-led-growth`, `22-ecommerce-marketing`, `23-real-estate-marketing`,
 `24-retail-marketing`, `25-account-based-marketing`, `26-community-reputation`,
-`27-content-production`, `28-platform-playbooks`.
+`27-content-production`, `28-platform-playbooks`, `29-advertising-policy`,
+`30-optimisation-disciplines`.
 
 ## Contributing
 

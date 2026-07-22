@@ -1,8 +1,25 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { parse as parseYaml } from 'yaml';
 import type { ServerContext } from '../../server/context.js';
 import { logger } from '../../utils/logger.js';
+
+/** Load and parse the advertising-policy config, or null if unavailable. */
+async function loadAdPolicies(
+  ctx: ServerContext,
+): Promise<Record<string, unknown> | null> {
+  try {
+    const text = await fs.readFile(
+      path.join(ctx.config.paths.configDir, 'ad-policies.yaml'),
+      'utf8',
+    );
+    return parseYaml(text) as Record<string, unknown>;
+  } catch (err) {
+    logger.warn('Failed to read ad-policies.yaml', { error: String(err) });
+    return null;
+  }
+}
 
 /**
  * Register MCP resources. Resources are read-only, versioned and clearly
@@ -17,6 +34,8 @@ import { logger } from '../../utils/logger.js';
  *   marketing://metrics/catalogue
  *   marketing://channels/catalogue
  *   marketing://funnel-stages
+ *   marketing://policies/catalogue
+ *   marketing://policies/{network}
  */
 export function registerResources(server: McpServer, ctx: ServerContext): void {
   // Skill catalogue (static).
@@ -199,6 +218,87 @@ export function registerResources(server: McpServer, ctx: ServerContext): void {
         // fall through with default message
       }
       return { contents: [{ uri: uri.href, mimeType: 'text/markdown', text }] };
+    },
+  );
+
+  // Advertising-policy catalogue (index of networks + cross-cutting rules).
+  server.registerResource(
+    'ad-policy-catalogue',
+    'marketing://policies/catalogue',
+    {
+      title: 'Advertising policy catalogue',
+      description:
+        'Index of ad networks plus special ad categories and restricted industries. Summary only; ' +
+        'verify against each network official policy centre. Not legal advice.',
+      mimeType: 'application/json',
+    },
+    async (uri) => {
+      const policies = await loadAdPolicies(ctx);
+      const networks = (policies?.networks as Array<Record<string, unknown>> | undefined) ?? [];
+      const payload = {
+        version: policies?.version ?? null,
+        last_reviewed: policies?.last_reviewed ?? null,
+        disclaimer:
+          'Summary only. Ad policies change frequently and vary by region/product. Verify against ' +
+          'the official policy centre and route regulated/high-risk ads to legal. Not legal advice.',
+        networks: networks.map((n) => ({
+          id: n.id,
+          name: n.name,
+          official_policy_centre: n.official_policy_centre,
+          covers: n.covers,
+        })),
+        special_ad_categories: policies?.special_ad_categories ?? [],
+        restricted_industries: policies?.restricted_industries ?? [],
+        common_principles: policies?.common_principles ?? [],
+      };
+      return {
+        contents: [
+          { uri: uri.href, mimeType: 'application/json', text: JSON.stringify(payload, null, 2) },
+        ],
+      };
+    },
+  );
+
+  // Per-network advertising policy (template).
+  server.registerResource(
+    'ad-policy',
+    new ResourceTemplate('marketing://policies/{network}', { list: undefined }),
+    {
+      title: 'Advertising network policy summary',
+      description:
+        'Policy summary for a single ad network (prohibited/restricted content, targeting, ' +
+        'disclosures). Summary only; verify against the official policy centre. Not legal advice.',
+      mimeType: 'application/json',
+    },
+    async (uri, variables) => {
+      const network = String(variables.network);
+      const policies = await loadAdPolicies(ctx);
+      const networks = (policies?.networks as Array<Record<string, unknown>> | undefined) ?? [];
+      const match = networks.find((n) => n.id === network);
+      if (!match) {
+        return {
+          contents: [
+            {
+              uri: uri.href,
+              mimeType: 'text/plain',
+              text: `Ad network policy not found: ${network}. Available: ${networks
+                .map((n) => n.id)
+                .join(', ')}`,
+            },
+          ],
+        };
+      }
+      const payload = {
+        disclaimer:
+          'Summary only. Verify against the official policy centre before submission. Not legal advice.',
+        last_reviewed: policies?.last_reviewed ?? null,
+        ...match,
+      };
+      return {
+        contents: [
+          { uri: uri.href, mimeType: 'application/json', text: JSON.stringify(payload, null, 2) },
+        ],
+      };
     },
   );
 

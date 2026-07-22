@@ -1,0 +1,184 @@
+# Advertising policy summaries per network.
+#
+# IMPORTANT: This is a structured, human-readable SUMMARY to support pre-flight
+# review. Ad-network policies change frequently and vary by region and product.
+# This is NOT legal advice and is NOT guaranteed current. Always verify against
+# each network's official policy centre (see official_policy_centre) and route
+# high-risk or regulated ads to legal/compliance before submission.
+version: 1.0.0
+last_reviewed: 2026-07-21
+
+# Concepts that apply across most major ad networks.
+common_principles:
+  - No illegal products or services.
+  - No misleading, deceptive or unsubstantiated claims (incl. false urgency, fake reviews).
+  - No prohibited/dangerous content (weapons, drugs, hate, violent/shocking content).
+  - Respect intellectual property (no counterfeit, no unauthorised trademark/copyright use).
+  - No exploitation of personal/sensitive attributes ("we know you are ...").
+  - Ads must be transparent, clearly identifiable, and lead to functional, relevant destinations.
+  - Restricted categories (alcohol, gambling, financial, health, political) require extra rules,
+    certification, or are limited by region/age.
+  - Special ad categories (housing, employment, credit, social/political) restrict targeting.
+  - Required disclosures (sponsorship, political authorisation, AI-generated content) must be present.
+
+# Targeting-restricted categories common to Meta and Google (esp. in regulated regions).
+special_ad_categories:
+  - id: housing
+    note: Housing ads (sale/rental, insurance, listings). Restricted audience targeting (no age,
+      gender, ZIP-radius or many detailed options). Fair-housing/anti-discrimination rules apply.
+  - id: employment
+    note: Job ads/opportunities. Restricted targeting; anti-discrimination rules apply.
+  - id: credit
+    note: Credit cards, loans, financing. Restricted targeting; fair-lending rules apply.
+  - id: social-issues-elections-politics
+    note: Requires advertiser authorisation/identity verification, "paid for by" disclaimers,
+      and inclusion in the public ad library. Some networks prohibit political ads entirely.
+
+# Verticals that are restricted (allowed only with conditions) or prohibited across networks.
+restricted_industries:
+  - id: alcohol
+    note: Age/region gating, no targeting minors, no irresponsible-consumption messaging.
+  - id: gambling
+    note: Licensing/certification required; region-gated; responsible-gambling messaging.
+  - id: financial-services
+    note: Clear terms/APR disclosures; some products (crypto, CFDs, payday) restricted or need
+      certification.
+  - id: healthcare-pharma
+    note: No prohibited/prescription-without-authorisation; restricted health claims;
+      no exploitation of health conditions; local licensing.
+  - id: crypto
+    note: Certification/authorisation often required; region-gated; many products prohibited.
+  - id: cbd-supplements
+    note: Often restricted/prohibited; unproven health claims banned.
+  - id: dating
+    note: Restricted; pre-authorisation on some networks; no deceptive/adult content.
+  - id: political
+    note: See special_ad_categories; authorisation + disclaimers or outright prohibition.
+
+networks:
+  - id: google-ads
+    name: Google Ads
+    official_policy_centre: https://support.google.com/adspolicy
+    covers: [google-search, google-display, youtube-ads, google-shopping, gmail, demand-gen, pmax]
+    prohibited_content:
+      - Counterfeit goods.
+      - Dangerous products/services (weapons, explosives, recreational drugs, tobacco).
+      - Enabling dishonest behaviour (hacking, fake documents, spyware, exam cheating).
+      - Inappropriate content (hateful, violent, shocking, harassing).
+    restricted_content:
+      - Adult content; alcohol; gambling & games; healthcare & medicines; financial services;
+        political content; copyrights; trademarks; other restricted businesses.
+    editorial_technical:
+      - No misleading/clickbait; clear, professional formatting; functional site.
+      - Destination must work, match the ad, and not circumvent review ("cloaking").
+    targeting_restrictions:
+      - Personalised-advertising policy prohibits targeting based on sensitive categories.
+      - Housing, employment and credit ads have restricted targeting (esp. US/Canada).
+    disclosures:
+      - Political ads require identity verification and "paid for by" disclosures where applicable.
+
+  - id: meta-ads
+    name: Meta Ads (Facebook & Instagram)
+    official_policy_centre: https://www.facebook.com/policies/ads/
+    covers: [facebook, instagram, messenger, audience-network, threads]
+    note: Facebook and Instagram share Meta's Advertising Standards; differences are placement/format,
+      not policy.
+    prohibited_content:
+      - Illegal products/services; discriminatory practices.
+      - Tobacco/related; drugs; unsafe supplements; weapons/ammo/explosives.
+      - Adult content; third-party infringement; sensational/shocking content.
+      - Personal attributes (implying/asserting knowledge of race, religion, health, sexual
+        orientation, financial status, etc.).
+      - Misinformation and content debunked by fact-checkers.
+    restricted_content:
+      - Alcohol; dating; real-money gambling; financial products & crypto (with authorisation);
+        social issues/elections/politics (authorisation + disclaimer); health/wellness (no
+        negative body-image / BMI, no idealised results).
+    targeting_restrictions:
+      - Special Ad Categories (Credit, Employment, Housing, Social Issues/Elections/Politics)
+        restrict audience targeting (no age/gender/detailed/ZIP-radius as usual).
+    disclosures:
+      - Political/social-issue ads require authorisation and "Paid for by" disclaimers + ad library.
+      - Disclosure of AI-generated/altered political or social-issue imagery may be required.
+
+  - id: tiktok-ads
+    name: TikTok Ads
+    official_policy_centre: https://ads.tiktok.com/help/
+    covers: [tiktok]
+    prohibited_content:
+      - Illegal/dangerous products; weapons; drugs; tobacco/vaping.
+      - Misleading claims; shocking/violent content; hate; adult content.
+      - Political advertising is prohibited.
+    restricted_content:
+      - Alcohol; gambling; financial services; health; restricted per region.
+    editorial_technical:
+      - Native, non-deceptive creative; correct audio licensing; readable text.
+    targeting_restrictions:
+      - Minimum age targeting; extra protections for younger audiences; region rules.
+    disclosures:
+      - Branded content/partnerships must be disclosed via platform tools.
+
+  - id: linkedin-ads
+    name: LinkedIn Ads
+    official_policy_centre: https://www.linkedin.com/legal/ads-policy
+    covers: [linkedin]
+    prohibited_content:
+      - Illegal products; weapons; drugs; tobacco; adult; hate/discrimination.
+      - Deceptive/false claims; infringing content.
+    restricted_content:
+      - Alcohol; gambling; financial services; political (restricted); dating (restricted).
+    targeting_restrictions:
+      - No targeting based on sensitive/protected attributes; professional-context targeting.
+    disclosures:
+      - Sponsored content must be clearly identified.
+
+  - id: microsoft-ads
+    name: Microsoft Advertising (Bing)
+    official_policy_centre: https://about.ads.microsoft.com/en/resources/policies
+    covers: [bing-search, microsoft-audience-network]
+    prohibited_content:
+      - Counterfeit; dangerous products/weapons/drugs; dishonest-behaviour enablement.
+      - Misleading/inaccurate content; inappropriate/offensive content.
+    restricted_content:
+      - Adult; alcohol; gambling; healthcare & pharmacy; financial services; trademarks.
+    editorial_technical:
+      - Accurate, functional ads and landing pages; relevance and transparency.
+    targeting_restrictions:
+      - Restricted targeting for sensitive categories; housing/employment/credit rules (US).
+
+  - id: pinterest-ads
+    name: Pinterest Ads
+    official_policy_centre: https://policy.pinterest.com/en/advertising-guidelines
+    covers: [pinterest]
+    prohibited_content:
+      - Illegal/dangerous products; weapons; drugs; tobacco; adult; hate.
+      - Misleading claims; sensational/shocking content; body-shaming/negative self-image.
+    restricted_content:
+      - Alcohol; financial services; health/wellness (restricted claims); political (restricted).
+    editorial_technical:
+      - High-quality, non-deceptive creative; accurate destination.
+
+  - id: x-ads
+    name: X Ads (Twitter)
+    official_policy_centre: https://business.x.com/en/help/ads-policies
+    covers: [x-twitter]
+    prohibited_content:
+      - Illegal/dangerous products; weapons; drugs; tobacco; adult; hate/abuse.
+      - Deceptive/misleading claims; malware; counterfeit.
+    restricted_content:
+      - Alcohol; gambling; financial services; health; political (restricted/region-dependent).
+    disclosures:
+      - Political-content advertising is restricted and, where allowed, requires certification.
+
+  - id: amazon-ads
+    name: Amazon Ads
+    official_policy_centre: https://advertising.amazon.com/resources/ad-policy
+    covers: [amazon-sponsored, amazon-dsp]
+    prohibited_content:
+      - Prohibited/illegal products; counterfeit; unsafe products.
+      - Misleading claims; unverifiable pricing/savings claims; competitor references.
+    restricted_content:
+      - Alcohol; supplements/health claims; restricted categories per marketplace.
+    editorial_technical:
+      - Creative acceptance rules (no unsupported claims, correct language, functional destinations,
+        no external links unless permitted).
