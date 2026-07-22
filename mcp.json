@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "digital-marketing-skills": {
+      "command": "npx",
+      "args": ["-y", "digital-marketing-skills-mcp@latest"],
+      "note": "Runs the Digital Marketing Skills MCP server via npx. Read-only by default; high-risk actions require human approval. Skills are bundled in the package and resolved relative to the server, so no working-directory setup is needed."
+    }
+  }
+}

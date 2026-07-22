@@ -58,14 +58,52 @@ npm run start:http   # health check at http://127.0.0.1:8080/health
 
 Copy `.env.example` to `.env` to adjust transport, safety defaults and directories.
 
-### Connecting an MCP client (stdio)
+## Install as a Cursor plugin
+
+This repository is a Cursor plugin: [`.cursor-plugin/plugin.json`](./.cursor-plugin/plugin.json)
+is the manifest and [`mcp.json`](./mcp.json) registers the MCP server (launched via `npx`, so the
+bundled skills are resolved automatically — no working-directory setup needed).
+
+- **Local (private) install:** copy or symlink this repo into `~/.cursor/plugins/local/`, then run
+  *Developer: Reload Window*.
+  ```bash
+  ln -s "$(pwd)" ~/.cursor/plugins/local/digital-marketing-skills
+  ```
+- **Marketplace:** publish the public repo at
+  [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) (manual review).
+
+## Use across MCP clients
+
+Once the package is published to npm (`npm publish`), any MCP client can run it via `npx` with no
+local checkout. The server bundles its skills/config and resolves them relative to itself.
+
+**Cursor / Claude Desktop / Gemini CLI (stdio):**
 
 ```json
 {
   "mcpServers": {
-    "digital-marketing": {
+    "digital-marketing-skills": {
+      "command": "npx",
+      "args": ["-y", "digital-marketing-skills-mcp@latest"]
+    }
+  }
+}
+```
+
+- **Claude Desktop:** add the block above to `claude_desktop_config.json`.
+- **Gemini CLI:** add it under `mcpServers` in `~/.gemini/settings.json`.
+- **ChatGPT** (and other remote-only clients) require a **hosted HTTP endpoint** rather than a local
+  command. Run the Streamable HTTP transport (`npm run start:http`), deploy it behind HTTPS, and add
+  it as a custom connector: `{ "type": "http", "url": "https://your-host/mcp" }`.
+
+### From source (no npm)
+
+```json
+{
+  "mcpServers": {
+    "digital-marketing-skills": {
       "command": "node",
-      "args": ["dist/server/index.js", "--transport", "stdio"]
+      "args": ["/absolute/path/to/dist/server/index.js", "--transport", "stdio"]
     }
   }
 }

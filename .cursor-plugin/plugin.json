@@ -1,0 +1,27 @@
+{
+  "name": "digital-marketing-skills",
+  "displayName": "Digital Marketing Skills",
+  "version": "0.1.0",
+  "description": "160 production-ready digital marketing skills (strategy, market & customer research, SEO/AIO/GEO/SMO/CRO optimisation, paid & organic channels, email, content production, platform playbooks, advertising-policy compliance, analytics) plus workflows, 30 prompts, machine-readable policy resources and read-only metric tools - served through an MCP server.",
+  "author": {
+    "name": "mypsbots"
+  },
+  "homepage": "https://github.com/mypsbots/digital-marketing-skills",
+  "repository": "https://github.com/mypsbots/digital-marketing-skills",
+  "license": "Apache-2.0",
+  "category": "integrations",
+  "keywords": [
+    "digital-marketing",
+    "mcp",
+    "seo",
+    "aio",
+    "geo",
+    "smo",
+    "cro",
+    "content-marketing",
+    "advertising-policy",
+    "paid-media",
+    "marketing-automation",
+    "ai-marketing"
+  ]
+}

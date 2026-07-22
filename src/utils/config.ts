@@ -1,4 +1,10 @@
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// Package root resolved relative to this module (dist/utils/config.js -> ../..),
+// so the server locates its bundled skills/config/workflows regardless of the
+// current working directory - e.g. when launched via `npx` from any folder.
+const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 export interface AppConfig {
   transport: 'stdio' | 'http';
@@ -43,7 +49,7 @@ function int(value: string | undefined, fallback: number): number {
  * works regardless of the current working directory.
  */
 export function loadConfig(argv: string[] = process.argv.slice(2)): AppConfig {
-  const root = path.resolve(process.env.DM_MCP_ROOT ?? process.cwd());
+  const root = path.resolve(process.env.DM_MCP_ROOT ?? packageRoot);
 
   let transport = (process.env.DM_MCP_TRANSPORT as 'stdio' | 'http') ?? 'stdio';
   const transportFlagIndex = argv.indexOf('--transport');
