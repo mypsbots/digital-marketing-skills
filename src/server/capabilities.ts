@@ -5,7 +5,7 @@ import { registerPrompts } from '../mcp/prompts/register-prompts.js';
 import { registerTools } from '../mcp/tools/register-tools.js';
 
 export const SERVER_NAME = 'digital-marketing-skills-mcp';
-export const SERVER_VERSION = '0.1.0';
+export const SERVER_VERSION = '0.1.1';
 
 /**
  * Build an McpServer with all capabilities (resources, prompts, tools) registered.
