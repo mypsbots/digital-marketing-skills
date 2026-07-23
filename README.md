@@ -11,7 +11,7 @@ human-in-the-loop controls built in by default**.
 
 ## What's inside
 
-- **167 skills** across 31 categories (`skills/00-foundation` … `skills/30-optimisation-disciplines`),
+- **171 skills** across 31 categories (`skills/00-foundation` … `skills/30-optimisation-disciplines`),
   each a single rich `SKILL.md` with YAML metadata, methodology, decision rules, quality &
   compliance checklists, failure conditions, worked examples, KPIs and MCP mappings.
 - **MCP server** (TypeScript/Node) exposing:
@@ -146,7 +146,7 @@ token in the URL and select **No authentication**:
 ## Repository layout
 
 ```
-skills/            # 167 SKILL.md files across 31 categories
+skills/            # 171 SKILL.md files across 31 categories
 workflows/         # multi-step, approval-gated workflow definitions (YAML)
 industries/        # per-industry playbooks (saas, ecommerce, real-estate, retail)
 templates/         # reusable output templates (plans, briefs, reports, approvals)
