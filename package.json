@@ -1,6 +1,6 @@
 {
   "name": "digital-marketing-skills-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Enterprise Digital Marketing Skills library and Model Context Protocol (MCP) server. A modular, extensible platform of production-ready marketing skills, workflows, resources, prompts and tools for AI assistants and marketing teams.",
   "type": "module",
   "license": "Apache-2.0",
