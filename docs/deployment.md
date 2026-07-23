@@ -107,7 +107,7 @@ Header-based clients (Cursor, Claude, VS Code, Gemini CLI) should keep using
 ```bash
 # Docker/Render/Fly only — Vercel has no /health route:
 curl https://your-host/health
-# {"status":"ok","skills":171,"read_only":true}
+# {"status":"ok","skills":175,"read_only":true}
 
 # Use /api/mcp instead of /mcp on Vercel:
 curl -s -X POST https://your-host/mcp \
